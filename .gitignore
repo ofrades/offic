@@ -1,8 +1,8 @@
-.vscode/
+.vscode
 *.DS_Store
-.git/
-obj/
-bin/
+.git
+obj
+bin
 Server/obj/
 Server/bin/
 Client/obj/
