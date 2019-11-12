@@ -1,0 +1,7 @@
+./obj/
+./bin/
+.vscode/
+./Client/appsettings.Development.json
+./Client/appsettings.json
+./Server/appsettings.Development.json
+./Server/appsettings.json
