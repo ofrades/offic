@@ -1,3 +1,6 @@
+.vscode/
+*.DS_Store
+.git/
 obj/
 bin/
 Server/obj/
@@ -6,12 +9,9 @@ Client/obj/
 Client/bin/
 Shared/bin/
 Shared/obj/
-vscode/
 Client/appsettings.Development.json
 Client/appsettings.json
 Client/Properties/
 Server/Properties/
 Server/appsettings.Development.json
 Server/appsettings.json
-*.DS_Store
-.git/

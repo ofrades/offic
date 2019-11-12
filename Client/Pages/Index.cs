@@ -89,7 +89,10 @@ namespace Client.Pages.CodeBehind
 			_update = await HttpClient.PostJsonAsync<string>(apiUrl, updateForm.updatedContent);
 			await GetApiLimit();
 		}
-
+		
+		/// <summary>
+		/// SubmitValidForm
+		/// </summary>
 		public void SubmitValidForm() {
 			Console.WriteLine("Form Submitted Successfully!");
 		}
