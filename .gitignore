@@ -1,5 +1,11 @@
 ./obj/
 ./bin/
+./Server/obj/
+./Server/bin/
+./Client/obj/
+./Client/bin/
+./Shared/obj/
+./Shared/bin/
 .vscode/
 ./Client/appsettings.Development.json
 ./Client/appsettings.json
