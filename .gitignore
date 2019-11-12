@@ -1,6 +1,9 @@
-.vscode
+.vscode/
+.vscode/launch.json
+.vscode/tasks.json
+*.code-workspace
 *.DS_Store
-.git
+.git/
 obj
 bin
 Server/obj/
