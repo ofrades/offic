@@ -1,0 +1,15 @@
+<div class="user-info">
+    <AuthorizeView>
+        <Authorizing>
+            <text>...</text>
+        </Authorizing>
+        <Authorized Context="Auth">
+            <div>
+                <a class="btn btn-danger sign-out" href="user/signout"><span class="username">@Auth.User.Identity.Name</span> Sign out</a>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <a class="btn btn-primary sign-in" href="user/signin">Authenticate with <span class="iconify mb-1" data-icon="octicon:logo-github" data-inline="false"></span></a>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
