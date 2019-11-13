@@ -21,51 +21,6 @@
 
         <Loading InProgress="IsLoading"></Loading>
 
-        <AuthorizeView>
-        <Authorized>
-
-        <div class="card mt-2 bg-dark">
-            <div class="card-body">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3">Github Readme</span>
-                    </div>
-                    <input type="text" class="form-control" id="basic-url1" aria-describedby="basic-addon3" @bind-value:event="oninput" @bind-value="@owner" placeholder="Add Owner" />
-                    <input type="text" class="form-control" id="basic-url2" aria-describedby="basic-addon4" @bind-value:event="oninput" @bind-value="@repoName" placeholder="Add Repo" />
-
-                    <a class="btn btn-primary ml-sm-1" @onclick="async () => await GetReadme()" href="">Show</a>
-                </div>
-            </div>
-        </div>
-
-        @if (_readme != null) {
-                    <div class="main mt-3">
-                        <div class="card">
-                            <div class="card-body">
-
-<EditForm Context="Form" Model="@updateForm" OnValidSubmit="SubmitValidForm">
-<DataAnnotationsValidator />
-
-<EjsRichTextEditor @bind-Value="@updateForm.updatedContent">
-@Markdig.Markdown.ToHtml(_readme.readmeContent)
-</EjsRichTextEditor>
-
-<button class="e-btn" type="submit" @onclick="async () => await UpdateFile()">Submit</button>
-</EditForm>
-
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-muted" href="">Update</a>
-                                <a class="btn btn-muted" href="api/delete">Delete</a>
-                                <a class="btn btn-muted" href="api/create">Create</a>
-                                <a class="btn btn-muted" href="api/view">View</a>
-                            </div>
-                        </div>
-                    </div>
-        }
-        <div class="text-center mb-1 mt-3">@RateLimits</div>
-            </Authorized>
-        </AuthorizeView>
+        <Readme />
 
     </div>
-<p>@updateForm.updatedContent</p>
