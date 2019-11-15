@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.OpenApi.Models;
 using Shared;
 
 namespace Server {
@@ -42,7 +45,6 @@ namespace Server {
 			services.AddControllers();
 			services.AddAuthentication(options => {
 					options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-					
 				})
 				.AddCookie()
 				.AddGitHub (githubOptions => {
@@ -50,9 +52,14 @@ namespace Server {
 					githubOptions.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
 					githubOptions.SaveTokens = true;
 					githubOptions.TokenEndpoint = "https://github.com/login/oauth/access_token";
+					githubOptions.Scope.Add("repo");
 					githubOptions.CallbackPath = "/signin";
 					githubOptions.ClaimsIssuer = "GitHub";
 				});
+
+			services.AddSwaggerGen(options => {
+				options.SwaggerDoc(name: "v1", info: new OpenApiInfo{Title = "Offic Service API Version 1", Version = "v1"});
+			});
 			services.AddAutoMapper(typeof(Startup));
 			services.AddScoped<HttpClient>();
 			services.AddAuthorization();
@@ -72,6 +79,10 @@ namespace Server {
 				app.UseDeveloperExceptionPage ();
 				app.UseBlazorDebugging ();
 			}
+			app.UseSwagger();
+			app.UseSwaggerUI(c => {
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+			});
 			app.UseStaticFiles ();
 			app.UseRouting ();
 			app.UseAuthentication ();

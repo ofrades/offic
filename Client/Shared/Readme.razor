@@ -28,7 +28,7 @@
         <div class="card">
             <div class="card-body">
 
-            <EjsRichTextEditor @bind-Value="@updatedContent">
+            <EjsRichTextEditor @bind-Value="@updateForm.Content" EditorMode="EditorMode.Markdown"> 
             @Markdig.Markdown.ToHtml(_readme.readmeContent)
             </EjsRichTextEditor>
 
@@ -38,6 +38,7 @@
         </div>
     </div>
 }
+<p>@updateForm.Content</p>
 
 @if(_reposList != null){
     <div class="card">

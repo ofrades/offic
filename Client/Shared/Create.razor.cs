@@ -11,7 +11,7 @@ namespace Client.Shared
 	/// <summary>
 	/// Index
 	/// </summary>
-	public partial class Readme {
+	public partial class Create {
 
 		/// <summary>
 		/// Is Loading
@@ -33,16 +33,18 @@ namespace Client.Shared
 		public string repoName { get; set; }
 
 		/// <summary>
-		/// Content Update
+		/// Create Content
 		/// </summary>
 		/// <value></value>
 		[Parameter]
-		public static string _contentUpdated { get; set; }
+		public string content { get; set; }
 
 		/// <summary>
-		/// Readme
+		/// Title of New File
 		/// </summary>
-		public GitReadme _readme;
+		/// <value></value>
+		[Parameter]
+		public string title { get; set; }
 
 		/// <summary>
 		/// Inject HttpClient
@@ -50,15 +52,6 @@ namespace Client.Shared
 		/// <value></value>
 		[Inject]
 		public HttpClient HttpClient { get; set; }
-
-		/// <summary>
-		/// GetReadme
-		/// </summary>
-		/// <returns></returns>
-		public async Task GetReadme() {
-			var apiUrl = $"api/{owner}/{repoName}/readme";
-			_readme = await HttpClient.GetJsonAsync<GitReadme>(apiUrl);
-		}
 
 		/// <summary>
 		/// reposList
@@ -74,16 +67,25 @@ namespace Client.Shared
 			_reposList = await HttpClient.GetJsonAsync<List<GitRepo>>(apiUrl);
 		}
 
+		CreateContent createContent = new CreateContent(content, title);
 
-		UpdateForm updateForm = new UpdateForm(_contentUpdated);
 		/// <summary>
-		/// UpdateFile
+		/// CreateFile
 		/// </summary>
 		/// <returns></returns>
-		public async Task UpdateFile() {
-			var apiUrl = $"api/{owner}/{repoName}/update";
+		public async Task CreateFile() {
+			var apiUrl = $"api/{owner}/{repoName}/{title}/create";
 			// var markdown = Markdown.Normalize(updatedContent);
-			var update = await HttpClient.PostJsonAsync<string>(apiUrl, updateForm.Content);
+			var update = await HttpClient.PostJsonAsync<string>(apiUrl, content);
+		}
+
+		protected bool showEditor = false;
+
+		/// <summary>
+		/// Show Editor
+		/// </summary>
+		public void ShowEditor() {
+			showEditor = true;
 		}
 		
 		/// <summary>

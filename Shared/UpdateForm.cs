@@ -4,8 +4,12 @@ namespace Shared {
 	/// </summary>
 	public class UpdateForm {
 
+		/// <summary>
+		/// Update Form
+		/// </summary>
+		/// <param name="_contentUpdated"></param>
 		public UpdateForm(string _contentUpdated){
-			UpdatedContent = _contentUpdated;
+			Content = _contentUpdated;
 		}
 		
 		/// <summary>
@@ -17,7 +21,7 @@ namespace Shared {
 		/// UpdatedContent
 		/// </summary>
 		/// <value></value>
-		public string UpdatedContent;
+		public string Content;
 	}
 	
 }

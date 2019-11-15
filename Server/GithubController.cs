@@ -9,6 +9,9 @@ using Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Unicode;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Server {
 
@@ -25,7 +28,7 @@ namespace Server {
 		/// Create Client
 		/// </summary>
 		/// <returns></returns>
-		public async Task<GitHubClient> CreateClient() {
+		private async Task<GitHubClient> CreateClient() {
 			var authResult = await HttpContext.AuthenticateAsync();
 			if (!authResult.Succeeded) {
 				throw new Exception("Not Authenticated");
@@ -56,19 +59,23 @@ namespace Server {
 			var repositoryId = repository.Id;
 			var defaultBranchName = repository.DefaultBranch;
 			
-			var existingFile = await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, "README.md", repository.DefaultBranch);
+			var existingFile = (await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, "README.md", repository.DefaultBranch)).FirstOrDefault();
+
+			if (existingFile == null) {
+				throw new ArgumentException("Parameter cannot be null");
+			}
 
 			var updateFile = await client.Repository.Content.UpdateFile(
-					owner,
-					repoName,
-					"README.md",
-					new UpdateFileRequest(
-						"Success: Updated File",
-						updatedContent,
-						existingFile
-						.FirstOrDefault()
-						.Sha
-					));
+				owner,
+				repoName,
+				existingFile.Path,
+				new UpdateFileRequest(
+					"Success: Updated File",
+					updatedContent,
+					existingFile.Sha,
+					defaultBranchName
+				)
+			);
 		}
 
 		/// <summary>
@@ -91,24 +98,34 @@ namespace Server {
 		/// <summary>
 		/// Create File
 		/// </summary>
-		/// <param name="data"></param>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
+		/// <param name="title"></param>
+		/// <param name="content"></param>
 		/// <returns></returns>
-		[Route("{owner}/{repoName}/create")]
-		[HttpGet]
-		public async Task<IActionResult> CreateFile(
-			[FromBody] RepoUpdateRequest data,
+		[Route("{owner}/{repoName}/{titleContent}/create")]
+		[HttpPost]
+		public async Task CreateFile(
 			[FromRoute] string owner,
-			[FromRoute] string repoName
+			[FromRoute] string repoName,
+			[FromRoute] string title,
+			[FromBody] string content
 		) {
 			var client = await CreateClient();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
 			
-			var createFile = client.Repository.Content.CreateFile(owner, repoName, "/README.md", new CreateFileRequest("File Create", data.Content, defaultBranchName, true));
-
-			return Created("/create", createFile);
+			var createFile = client.Repository.Content.CreateFile(
+				owner,
+				repoName,
+				title,
+				new CreateFileRequest(
+					"File Create",
+					content,
+					defaultBranchName,
+					true
+				)
+			);
 		}
 
 		/// <summary>
@@ -128,8 +145,12 @@ namespace Server {
 			var defaultBranchName = repository.DefaultBranch;
 
 			await client.Repository.Content.DeleteFile(
-				owner,repoName, "/README.md",
-				new DeleteFileRequest("File Delete", defaultBranchName));
+				owner,
+				repoName,
+				"/README.md",
+				new DeleteFileRequest(
+					"File Delete",
+					defaultBranchName));
 		}
 
 		/// <summary>
