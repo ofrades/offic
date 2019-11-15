@@ -4,11 +4,20 @@ namespace Shared {
 	/// </summary>
 	public class UpdateForm {
 
+		public UpdateForm(string _contentUpdated){
+			UpdatedContent = _contentUpdated;
+		}
+		
 		/// <summary>
-		/// updatedContent
+		/// UpdateForm
+		/// </summary>
+		public UpdateForm(){}
+
+		/// <summary>
+		/// UpdatedContent
 		/// </summary>
 		/// <value></value>
-		public string updatedContent { get; set; }
+		public string UpdatedContent;
 	}
 	
 }

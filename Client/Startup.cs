@@ -18,9 +18,8 @@ namespace Client {
 		/// <param name="services"></param>
 		public void ConfigureServices (IServiceCollection services) {
 			services.AddAuthorizationCore ();
-			services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider> ();
-			services.AddSingleton<GitRepository, GitRepository> ();
-			services.AddSingleton<IMdService, GithubMdService> ();
+			services.AddScoped<AuthenticationStateProvider, 
+			ServerAuthenticationStateProvider> ();
 			services
 				.AddBlazorise ()
 				.AddBootstrapProviders ();

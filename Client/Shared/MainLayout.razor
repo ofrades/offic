@@ -2,8 +2,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <nav class="navbar navbar-dark bg-primary justify-content-md-center">
-            Hello @context.User.Identity.Name your Github Api info is : <RateLimit />
+        <nav class="navbar navbar-dark bg-muted justify-content-md-center">
+            <RateLimit />
         </nav>
     </Authorized>
 </AuthorizeView>
@@ -11,9 +11,6 @@
 <div class="main">    
     <div class="content px-4">
         @Body
-    </div>
-    <div class="content px-4">
-        <MostStarred />
     </div>
 
     <div class="px-4">

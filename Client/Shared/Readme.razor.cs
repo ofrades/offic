@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Shared;
 using Client.Shared;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.IO;
+using Markdig;
+using System.Text;
 
 namespace Client.Shared {
 
@@ -17,11 +22,9 @@ namespace Client.Shared {
 		/// </summary>
 		public bool IsLoading = false;
 
-		/// <summary>
-		/// updateForm
-		/// </summary>
-		/// <returns></returns>
-		public UpdateForm updateForm {get;set;} = new UpdateForm();
+		[Inject]
+		public NavigationManager navigationManager { get; set; }
+
 
 		/// <summary>
 		/// owner
@@ -37,15 +40,13 @@ namespace Client.Shared {
 		[Parameter]
 		public string repoName { get; set; }
 
-		/// <summary>
-		/// Readme
-		/// </summary>
-		public GitReadme _readme;
+		[Parameter]
+		public string updatedContent { get; set; }
 
 		/// <summary>
 		/// Readme
 		/// </summary>
-		public string _update;
+		public GitReadme _readme;
 
 		/// <summary>
 		/// Inject HttpClient
@@ -54,8 +55,6 @@ namespace Client.Shared {
 		[Inject]
 		public HttpClient HttpClient { get; set; }
 
-		RateLimit newRateLimit = new RateLimit();
-
 		/// <summary>
 		/// GetReadme
 		/// </summary>
@@ -63,17 +62,33 @@ namespace Client.Shared {
 		public async Task GetReadme() {
 			var apiUrl = $"api/{owner}/{repoName}/readme";
 			_readme = await HttpClient.GetJsonAsync<GitReadme>(apiUrl);
-			await newRateLimit.GetApiLimit();
 		}
 
 		/// <summary>
-		/// GetReadme
+		/// reposList
+		/// </summary>
+		public List<GitRepo> _reposList;
+
+		/// <summary>
+		/// GetRepos
+		/// </summary>
+		/// <returns></returns>
+		public async Task GetRepos() {
+			var apiUrl = $"api/{owner}/repos";
+			_reposList = await HttpClient.GetJsonAsync<List<GitRepo>>(apiUrl);
+		}
+		// UpdateForm updateForm = new UpdateForm();
+		/// <summary>
+		/// UpdateFile
 		/// </summary>
 		/// <returns></returns>
 		public async Task UpdateFile() {
-			var apiUrl = $"api/{owner}/{repoName}/update";
-			_update = await HttpClient.PostJsonAsync<string>(apiUrl, updateForm.updatedContent);
-			await newRateLimit.GetApiLimit();
+			var apiUrl = $"{navigationManager.BaseUri}api/{owner}/{repoName}/update";
+
+			var stringContent = new StringContent(updatedContent, Encoding.UTF8, "application/json");
+			var response = await HttpClient.PostAsync(apiUrl, stringContent);
+
+			// var update = await HttpClient.GetJsonAsync<UpdateForm>(apiUrl);
 		}
 		
 		/// <summary>

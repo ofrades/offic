@@ -1,5 +1,7 @@
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,9 +53,10 @@ namespace Server {
 					githubOptions.CallbackPath = "/signin";
 					githubOptions.ClaimsIssuer = "GitHub";
 				});
+			services.AddAutoMapper(typeof(Startup));
+			services.AddScoped<HttpClient>();
 			services.AddAuthorization();
 			services.AddServerSideBlazor();
-			services.AddTransient<GitReadme>(provider => {return new GitReadme();});
 		}
 
 		/// <summary>
@@ -61,7 +64,10 @@ namespace Server {
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+		public void Configure (
+			IApplicationBuilder app,
+			IWebHostEnvironment env
+		) {
 			if (env.IsDevelopment ()) {
 				app.UseDeveloperExceptionPage ();
 				app.UseBlazorDebugging ();

@@ -1,6 +1,6 @@
 ﻿@layout MainLayout
 @page "/"
-@inherits Client.Pages.CodeBehind.Index
+
 @using Client.Shared
 @using Newtonsoft.Json.Linq
 					
@@ -24,3 +24,7 @@
         <Readme />
 
     </div>
+
+    @code {
+        bool IsLoading = false;
+    }

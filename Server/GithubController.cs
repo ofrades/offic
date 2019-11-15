@@ -7,6 +7,8 @@ using Octokit;
 using Shared;
 using Server.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server {
 
@@ -18,15 +20,6 @@ namespace Server {
 	[ApiController]
 	[Authorize]
 	public class GithubController : Controller {
-		private GitReadme _gitReadme;
-
-		/// <summary>
-		/// GithubController Constructor
-		/// </summary>
-		/// <param name="gitReadme"></param>
-		public GithubController(GitReadme gitReadme){
-			_gitReadme = gitReadme;
-		}
 
 		/// <summary>
 		/// Create Client
@@ -42,7 +35,7 @@ namespace Server {
 			client.Credentials = new Credentials(accessToken);
 			return client;
 		}
-		UpdateForm updatedContent = new UpdateForm();
+
 		/// <summary>
 		/// Update File
 		/// </summary>
@@ -55,15 +48,27 @@ namespace Server {
 		public async Task UpdateFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
-			[FromForm] string updatedContent
+			[FromBody] string updatedContent
 		) {
 			var client = await CreateClient();
 			var repository = await client.Repository.Get(owner, repoName);
-			var defaultBranchName = repository.DefaultBranch;
-			var lastCommit = (await client.Repository.Commit.GetAll(owner, repoName))
-				.FirstOrDefault();
 
-			var updateFile = await client.Repository.Content.UpdateFile(owner, repoName, "api/{owner}/{repoName}/update", new UpdateFileRequest("updatefile", updatedContent, lastCommit.Sha.ToString()));
+			var repositoryId = repository.Id;
+			var defaultBranchName = repository.DefaultBranch;
+			
+			var existingFile = await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, "README.md", repository.DefaultBranch);
+
+			var updateFile = await client.Repository.Content.UpdateFile(
+					owner,
+					repoName,
+					"README.md",
+					new UpdateFileRequest(
+						"Success: Updated File",
+						updatedContent,
+						existingFile
+						.FirstOrDefault()
+						.Sha
+					));
 		}
 
 		/// <summary>
@@ -139,9 +144,31 @@ namespace Server {
 		) {
 			var client = await CreateClient();
 			var readme = await client.Repository.Content.GetReadme(owner, repoName);
-			_gitReadme.readmeContent = readme.Content;
-			_gitReadme.readmeName = readme.Name;
-			return _gitReadme;
+
+			var gitReadme = new GitReadme {
+				readmeContent = readme.Content,
+				readmeName = readme.Name,
+			};
+			return gitReadme;
+		}
+
+		/// <summary>
+		/// GetRepos
+		/// </summary>
+		/// <returns></returns>
+		[Route("{owner}/repos")]
+		[HttpGet]
+		public async Task<IEnumerable<GitRepo>> GetRepos(
+			[FromRoute] string owner
+		) {
+			var client = await CreateClient();
+			var repos = (await client.Repository.GetAllForUser(owner))
+				.Where(r => r.Name != "")
+				.OrderByDescending(r => r.StargazersCount)
+				.Select(r => new GitRepo (r.Name, r.FullName, r.Description, r.StargazersCount))
+				.Take(10);
+
+			return repos;
 		}
 	}
 }
