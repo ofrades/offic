@@ -5,18 +5,13 @@ using Microsoft.AspNetCore.Components;
 using Shared;
 using System.Collections.Generic;
 
-namespace Client.Shared
+namespace Client.Components
 {
 
 	/// <summary>
 	/// Index
 	/// </summary>
 	public partial class Readme {
-
-		/// <summary>
-		/// Is Loading
-		/// </summary>
-		public bool IsLoading = false;
 
 		/// <summary>
 		/// owner
@@ -37,7 +32,7 @@ namespace Client.Shared
 		/// </summary>
 		/// <value></value>
 		[Parameter]
-		public static string _contentUpdated { get; set; }
+		public string content { get; set; }
 
 		/// <summary>
 		/// Readme
@@ -74,8 +69,6 @@ namespace Client.Shared
 			_reposList = await HttpClient.GetJsonAsync<List<GitRepo>>(apiUrl);
 		}
 
-
-		UpdateForm updateForm = new UpdateForm(_contentUpdated);
 		/// <summary>
 		/// UpdateFile
 		/// </summary>
@@ -83,7 +76,7 @@ namespace Client.Shared
 		public async Task UpdateFile() {
 			var apiUrl = $"api/{owner}/{repoName}/update";
 			// var markdown = Markdown.Normalize(updatedContent);
-			var update = await HttpClient.PostJsonAsync<string>(apiUrl, updateForm.Content);
+			var update = await HttpClient.PostJsonAsync<string>(apiUrl, content);
 		}
 		
 		/// <summary>

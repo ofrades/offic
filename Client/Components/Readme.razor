@@ -1,13 +1,7 @@
-﻿@using Client.Shared
-@using Newtonsoft.Json.Linq
-					
-@using Syncfusion.EJ2.Blazor
+﻿@using Syncfusion.EJ2.Blazor
 @using Syncfusion.EJ2.Blazor.RichTextEditor
 @using Syncfusion.EJ2.Blazor.Inputs
 
-<AuthorizeView>
-<Authorized>
-<Loading InProgress="IsLoading"></Loading>
 <div class="card mt-2 bg-dark">
     <div class="card-body">
         <div class="input-group">
@@ -28,7 +22,7 @@
         <div class="card">
             <div class="card-body">
 
-            <EjsRichTextEditor @bind-Value="@updateForm.Content" EditorMode="EditorMode.Markdown"> 
+            <EjsRichTextEditor @bind-Value="@content" EditorMode="EditorMode.Markdown"> 
             @Markdig.Markdown.ToHtml(_readme.readmeContent)
             </EjsRichTextEditor>
 
@@ -38,7 +32,6 @@
         </div>
     </div>
 }
-<p>@updateForm.Content</p>
 
 @if(_reposList != null){
     <div class="card">
@@ -53,11 +46,4 @@
             }
         </div>
     </div>
-}
-
-    </Authorized>
-</AuthorizeView>
-
-@code {
-
 }

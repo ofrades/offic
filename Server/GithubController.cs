@@ -13,7 +13,8 @@ using System.Text.Unicode;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace Server {
+namespace Server
+{
 
 	/// <summary>
 	/// Github Controller
@@ -22,7 +23,7 @@ namespace Server {
 	[Route("api")]
 	[ApiController]
 	[Authorize]
-	public class GithubController : Controller {
+	public partial class GithubController : Controller {
 
 		/// <summary>
 		/// Create Client
@@ -103,7 +104,7 @@ namespace Server {
 		/// <param name="title"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		[Route("{owner}/{repoName}/{titleContent}/create")]
+		[Route("{owner}/{repoName}/{title}/create")]
 		[HttpPost]
 		public async Task CreateFile(
 			[FromRoute] string owner,
@@ -190,6 +191,27 @@ namespace Server {
 				.Take(10);
 
 			return repos;
+		}
+
+		/// <summary>
+		/// GetRepos
+		/// </summary>
+		/// <returns></returns>
+		[Route("{search}/files")]
+		[HttpGet]
+		public async Task<SearchCodeResult> GetFiles(
+			[FromRoute] string search
+		) {
+			var client = await CreateClient();
+
+			var request = new SearchCodeRequest("auth"){
+				Language = Language.Markdown,
+				FileName = search
+			};
+
+			var result = await client.Search.SearchCode(request);
+
+			return result;
 		}
 	}
 }

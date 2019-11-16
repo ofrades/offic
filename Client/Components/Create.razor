@@ -1,21 +1,15 @@
-﻿@using Client.Shared
-@using Newtonsoft.Json.Linq
-					
-@using Syncfusion.EJ2.Blazor
+﻿@using Syncfusion.EJ2.Blazor
 @using Syncfusion.EJ2.Blazor.RichTextEditor
 @using System.ComponentModel.DataAnnotations
+@inject HttpClient HttpClient
 
-
-<AuthorizeView>
-<Authorized>
-<Loading InProgress="IsLoading"></Loading>
 <div class="card mt-2 bg-dark">
     <div class="card-body">
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3">Create File</span>
             </div>
-            <input type="text" class="form-control" id="basic-url1" aria-describedby="basic-addon3" @bind-value:event="oninput" @bind-value="@owner" placeholder="Add Owner" @onfocusout="async () => await GetRepos()"/>
+            <input type="text" class="form-control" id="basic-url1" aria-describedby="basic-addon3" @bind-value:event="oninput" @bind-value="@owner" placeholder="Add Owner"/>
             <input type="text" class="form-control" id="basic-url2" aria-describedby="basic-addon4" @bind-value:event="oninput" @bind-value="@repoName" placeholder="Add Repo" />
 
             <a class="btn btn-primary ml-sm-1" @onclick="ShowEditor" href="">Show</a>
@@ -39,12 +33,21 @@
     </div>
 }
 
-<p>@content</p>
-<p>@title</p>
-
-    </Authorized>
-</AuthorizeView>
-
 @code {
+
+    [Parameter] public string owner { get; set; }
+    [Parameter] public string repoName { get; set; }
+    [Parameter] public string content { get; set; }
+    [Parameter] public string title { get; set; }
+    bool showEditor = false;
+
+    private async Task CreateFile() {
+        var apiUrl = $"api/{owner}/{repoName}/{title}/create";
+        var update = await HttpClient.PostJsonAsync<string>(apiUrl, content);
+    }
+
+    public void ShowEditor() {
+        showEditor = true;
+    }
 
 }

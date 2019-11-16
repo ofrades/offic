@@ -26,7 +26,7 @@ namespace Client {
 		/// </summary>
 		/// <returns></returns>
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync () {
-			var userInfo = await _httpClient.GetJsonAsync<UserInfo> ("user");
+			var userInfo = await _httpClient.GetJsonAsync<UserInfo>("user");
 
 			var identity = userInfo.IsAuthenticated ?
 				new ClaimsIdentity (new [] { new Claim (ClaimTypes.Name, userInfo.Name) }, "serverauth") :

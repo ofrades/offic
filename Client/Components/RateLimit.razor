@@ -1,0 +1,21 @@
+@inject HttpClient HttpClient
+
+<AuthorizeView>
+    <Authorized>
+		<p>Hello <strong> @context.User.Identity.Name</strong>, your <span class="iconify mb-1" data-icon="octicon:logo-github" data-inline="false"> </span> Api info is: @RateLimits</p>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+	string RateLimits;
+
+	public async Task GetApiLimit() {
+		var apiUrl = $"api/limits";
+		RateLimits = await HttpClient.GetStringAsync(apiUrl);
+	}
+
+	protected override async Task OnInitializedAsync(){
+		await GetApiLimit();
+	}
+}
