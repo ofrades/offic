@@ -7,15 +7,8 @@ using Shared;
 
 namespace Client {
 
-	/// <summary>
-	/// Client Startup
-	/// </summary>
 	public class Startup {
 
-		/// <summary>
-		/// Client Startup ConfigureServices
-		/// </summary>
-		/// <param name="services"></param>
 		public void ConfigureServices (IServiceCollection services) {
 			services.AddAuthorizationCore ();
 			services.AddScoped<AuthenticationStateProvider, 
@@ -25,10 +18,6 @@ namespace Client {
 				.AddBootstrapProviders ();
 		}
 
-		/// <summary>
-		/// Client Startup Configure
-		/// </summary>
-		/// <param name="app"></param>
 		public void Configure (IComponentsApplicationBuilder app) {
 			app.Services
 				.UseBootstrapProviders ();

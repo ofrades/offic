@@ -10,12 +10,8 @@
 
 	string RateLimits;
 
-	public async Task GetApiLimit() {
+	protected override async Task OnInitializedAsync(){
 		var apiUrl = $"api/limits";
 		RateLimits = await HttpClient.GetStringAsync(apiUrl);
-	}
-
-	protected override async Task OnInitializedAsync(){
-		await GetApiLimit();
 	}
 }

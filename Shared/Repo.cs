@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 namespace Shared {
 
 	/// <summary>
-	/// Git Repo
+	/// Repo
 	/// </summary>
-	public class GitRepo {
+	public class Repo {
 
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public GitRepo(){}
+		public Repo(){}
 
 		/// <summary>
-		/// GitRepo Constructor
+		/// Repo Constructor
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="fullName"></param>
 		/// <param name="description"></param>
 		/// <param name="stargazersCount"></param>
-		public GitRepo(string name, string fullName, string description, int stargazersCount){
+		public Repo(string name, string fullName, string description, int stargazersCount){
 			Name = name;
 			FullName = fullName;
 			Description = description;
@@ -30,10 +30,10 @@ namespace Shared {
 		}
 
 		/// <summary>
-		/// GitRepo Constructor Sort by Stars
+		/// Repo Constructor Sort by Stars
 		/// </summary>
 		/// <param name="stargazersCount"></param>
-		public GitRepo(int stargazersCount){
+		public Repo(int stargazersCount){
 			StargazersCount = stargazersCount;
 		}
 

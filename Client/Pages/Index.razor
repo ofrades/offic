@@ -8,25 +8,39 @@
 @using Syncfusion.EJ2.Blazor.RichTextEditor
 @using Syncfusion.EJ2.Blazor.Inputs
 
-    <div class="main">
-        <h1 class="text-center mt-3">Offic</h1>
+<div class="main">
+
+    <Loading InProgress="IsLoading"></Loading>
+    <h1 class="text-center mt-3">Offic</h1>
+
+    <div class="text-center mt-3 mb-3">
+        
+        <LoginDisplay />
+
+    </div>
+
+<AuthorizeView>
+
+    
+    <Authorized>
+
+        <Readme />
+
+        <Create />
+
+    </Authorized>
+
+    <NotAuthorized>
 
         <h4 class="text-center mt-5">Authenticate yourself with GitHub and be able to view, create, modify and delete text files from repositories.</h4>
 
         <h5 class="text-center mt-3">Just provide a link and we will get the text for you.</h5>
 
-        <div class="text-center mt-3 mb-3">
-            <LoginDisplay />
-        </div>
+    </NotAuthorized>
+</AuthorizeView>
+    
+</div>
 
-        <Loading InProgress="IsLoading"></Loading>
-        
-        <Readme />
-
-        <Create />
-        
-    </div>
-
-    @code {
-        bool IsLoading = false;
-    }
+@code {
+    bool IsLoading = false;
+}

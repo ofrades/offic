@@ -1,6 +1,7 @@
 ﻿@using Syncfusion.EJ2.Blazor
 @using Syncfusion.EJ2.Blazor.RichTextEditor
 @using System.ComponentModel.DataAnnotations
+@using Client.Shared
 @inject HttpClient HttpClient
 
 <div class="card mt-2 bg-dark">
@@ -42,6 +43,7 @@
     bool showEditor = false;
 
     private async Task CreateFile() {
+        //IsLoading = true;
         var apiUrl = $"api/{owner}/{repoName}/{title}/create";
         var update = await HttpClient.PostJsonAsync<string>(apiUrl, content);
     }

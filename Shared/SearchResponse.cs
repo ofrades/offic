@@ -14,7 +14,7 @@ namespace Shared {
 		/// Search Response Items
 		/// </summary>
 		/// <value></value>
-		public IList<GitRepo> Items { get; set; }
+		public IList<Repo> Items { get; set; }
 
 		/// <summary>
 		/// Search Response Total Count

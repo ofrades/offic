@@ -7,24 +7,13 @@ using Shared;
 
 namespace Client {
 
-	/// <summary>
-	/// ServerAuthenticationStateProvider
-	/// </summary>
 	public class ServerAuthenticationStateProvider : AuthenticationStateProvider {
 		private readonly HttpClient _httpClient;
 
-		/// <summary>
-		/// ServerAuthenticationStateProvider Constructor
-		/// </summary>
-		/// <param name="httpClient"></param>
 		public ServerAuthenticationStateProvider (HttpClient httpClient) {
 			_httpClient = httpClient;
 		}
 
-		/// <summary>
-		/// GetAuthenticationStateAsync
-		/// </summary>
-		/// <returns></returns>
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync () {
 			var userInfo = await _httpClient.GetJsonAsync<UserInfo>("user");
 

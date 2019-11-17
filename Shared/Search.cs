@@ -5,7 +5,7 @@ namespace Shared {
 	/// <summary>
 	/// Search Files Class
 	/// </summary>
-	public class GitSearch {
+	public class Search {
 
 		/// <summary>
 		/// search

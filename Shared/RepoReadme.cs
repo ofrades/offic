@@ -4,9 +4,9 @@ using Octokit;
 namespace Shared {
 
     /// <summary>
-    /// Reame Class
+    /// Readme Class
     /// </summary>
-    public class GitReadme {
+    public class RepoReadme {
 
         /// <summary>
         /// Reame Name
