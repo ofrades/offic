@@ -14,11 +14,7 @@ namespace Server
 	/// <summary>
 	/// GetMdFiles Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetMdFilesController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Get Markdown Files
@@ -29,8 +25,7 @@ namespace Server
 		public async Task<SearchCodeResult> GetMdFiles(
 			[FromRoute] string search
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 
 			var request = new SearchCodeRequest("auth"){
 				Language = Language.Markdown,

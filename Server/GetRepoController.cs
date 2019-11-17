@@ -14,11 +14,7 @@ namespace Server
 	/// <summary>
 	/// GetRepos Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetReposController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// GetRepos
@@ -26,11 +22,10 @@ namespace Server
 		/// <returns>GitRepo</returns>
 		[Route("{owner}/repos")]
 		[HttpGet]
-		public async Task<IEnumerable<Repo>> GetRepos(
+		public async Task<IEnumerable<Repo>> GetRepo(
 			[FromRoute] string owner
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 			var repos = (await client.Repository.GetAllForUser(owner))
 				.Where(r => r.Name != "")
 				.OrderByDescending(r => r.StargazersCount)

@@ -15,10 +15,7 @@ namespace Server
 	/// GetReadme Controller
 	/// </summary>
 
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetReadmeController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Get Readme
@@ -30,13 +27,12 @@ namespace Server
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 			var readme = await client.Repository.Content.GetReadme(owner, repoName);
 
 			var gitReadme = new RepoReadme {
-				readmeContent = readme.Content,
-				readmeName = readme.Name,
+				Content = readme.Content,
+				Name = readme.Name,
 			};
 			return gitReadme;
 		}

@@ -14,11 +14,7 @@ namespace Server
 	/// <summary>
 	/// DeleteFile Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class DeleteFileController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Delete File
@@ -31,8 +27,7 @@ namespace Server
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
 

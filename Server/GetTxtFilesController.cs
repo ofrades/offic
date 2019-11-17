@@ -14,11 +14,7 @@ namespace Server
 	/// <summary>
 	/// GetTxtFiles Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetTxtFilesController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Get Text Files
@@ -29,8 +25,7 @@ namespace Server
 		public async Task<SearchCodeResult> GetTxtFiles(
 			[FromRoute] string search
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 
 			var request = new SearchCodeRequest("auth"){
 				Language = Language.Textile,

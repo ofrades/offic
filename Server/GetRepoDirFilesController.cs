@@ -14,11 +14,7 @@ namespace Server
 	/// <summary>
 	/// GetRepoDirFiles Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetRepoDirFilesController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Get Repo Directory Files
@@ -26,18 +22,17 @@ namespace Server
 		/// <returns></returns>
 		[Route("{owner}/{repoName}/{search}")]
 		[HttpGet]
-		public async Task<IEnumerable<string>> GetRepoDirFiles(
+		public async Task<IEnumerable<RepoDirFiles>> GetRepoDirFiles(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
 			[FromRoute] string search
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName, search))
 				.Where(r => r.Name != "")
 				.OrderByDescending(r => r.Name)
-				.Select(r => r.Name);
+				.Select(r => new RepoDirFiles(r.Name));
 
 			return result;
 		}

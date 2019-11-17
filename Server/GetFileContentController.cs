@@ -14,29 +14,24 @@ namespace Server
 	/// <summary>
 	/// Github Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetFileController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// GetFile Controller
 		/// </summary>
 		/// <returns></returns>
-		[Route("{owner}/{repoName}/file/{path}")]
+		[Route("{owner}/{repoName}/{path}/file")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoFile>> GetFile(
+		public async Task<IEnumerable<RepoFileContent>> GetFileContent(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
 			[FromRoute] string path
 			
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 
-			var result = (await client.Repository.Content.GetAllContentsByRef(owner, repoName, path))
-				.Select(r => new RepoFile(r.Content));
+			var result = (await client.Repository.Content.GetAllContentsByRef(owner, repoName, path, "master"))
+				.Select(r => new RepoFileContent(r.Content, r.Name));
 
 			return result;
 		}

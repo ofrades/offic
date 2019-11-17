@@ -24,7 +24,7 @@
             <div class="card-body">
 
             <EjsRichTextEditor @bind-Value="@content"> 
-            @Markdig.Markdown.ToHtml(_readme.readmeContent)
+            @Markdig.Markdown.ToHtml(_readme.Content)
             </EjsRichTextEditor>
 
             <button class="e-btn" type="submit" @onclick="async () => await UpdateFile()">Submit</button>

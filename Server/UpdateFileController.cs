@@ -8,33 +8,29 @@ using Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
 	/// UpdateFile Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class UpdateFileController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Update File
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
+		/// <param name="path"></param>
 		/// <param name="updatedContent"></param>
 		[Route("{owner}/{repoName}/update")]
 		[HttpPost]
 		public async Task UpdateFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
+			[FromRoute] string path,
 			[FromBody] string updatedContent
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
 
 			var repositoryId = repository.Id;
@@ -49,7 +45,7 @@ namespace Server
 			var updateFile = await client.Repository.Content.UpdateFile(
 				owner,
 				repoName,
-				existingFile.Path,
+				path,
 				new UpdateFileRequest(
 					"Success: Updated File",
 					updatedContent,

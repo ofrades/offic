@@ -7,6 +7,7 @@ using Octokit;
 using Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Server
 {
@@ -14,11 +15,7 @@ namespace Server
 	/// <summary>
 	/// GetRepoFiles Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class GetRepoFilesController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Get Repo Files
@@ -26,17 +23,17 @@ namespace Server
 		/// <returns></returns>
 		[Route("{owner}/{repoName}/files")]
 		[HttpGet]
-		public async Task<IEnumerable<string>> GetRepoFiles(
+		public async Task<IEnumerable<RepoListFiles>> GetRepoFilesList(
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 
 			var result = (await client.Repository.Content.GetAllContents(owner,repoName))
-				.Where(r => r.Name != "")
-				.OrderByDescending(r => r.Name)
-				.Select(r => r.Name);
+				.Where(s => new[] { ".md", ".txt" }
+				.Any(e => e == Path.GetExtension(s.Name)))
+				.OrderBy(o => o.Name)
+				.Select(r => new RepoListFiles(r.Name));
 
 			return result;
 		}

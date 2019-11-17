@@ -14,6 +14,8 @@ namespace Client.Components {
 
 		[Parameter]
 		public string repoName { get; set; }
+		
+		public string path = "README.md";
 
 		[Parameter]
 		public string content { get; set; }

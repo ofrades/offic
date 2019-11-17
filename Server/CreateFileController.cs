@@ -8,17 +8,12 @@ using Shared;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
 	/// CreateFile Controller
 	/// </summary>
-
-	[Route("api")]
-	[ApiController]
-	[Authorize]
-	public partial class CreateFileController : Controller {
+	public partial class GitHubController : Controller {
 
 		/// <summary>
 		/// Create File
@@ -35,8 +30,7 @@ namespace Server
 			[FromRoute] string title,
 			[FromBody] string content
 		) {
-			var newClient = new CreateClient();
-			var client = await newClient.NewClient();
+			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
 			

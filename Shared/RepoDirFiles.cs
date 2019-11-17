@@ -6,27 +6,27 @@ using System.Threading.Tasks;
 namespace Shared {
 
 	/// <summary>
-	/// Repo List Files
+	/// RepoDirFiles Class
 	/// </summary>
-	public class RepoFile {
+	public class RepoDirFiles {
 
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public RepoFile(){}
+		public RepoDirFiles(){}
 
 		/// <summary>
-		/// GitRepo Constructor
+		/// Repo Constructor
 		/// </summary>
-		/// <param name="content"></param>
-		public RepoFile(string content) {
-			Content = content;
+		/// <param name="name"></param>
+		public RepoDirFiles(string name){
+			Name = name;
 		}
 
 		/// <summary>
 		/// Repo File Name
 		/// </summary>
 		/// <value></value>
-		public string Content { get; set; }
+		public string Name { get; set; }
 	}
 }

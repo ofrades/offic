@@ -12,12 +12,12 @@ namespace Shared {
         /// Reame Name
         /// </summary>
         /// <value></value>
-        public string readmeName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Readme Content
         /// </summary>
         /// <value></value>
-        public string readmeContent { get; set; }
+        public string Content { get; set; }
     }
 }
