@@ -22,7 +22,7 @@ namespace Server {
 		/// <param name="repoName"></param>
 		/// <param name="path"></param>
 		/// <param name="updatedContent"></param>
-		[Route("{owner}/{repoName}/update")]
+		[Route("update/{owner}/{repoName}/{**path}")]
 		[HttpPost]
 		public async Task UpdateFile(
 			[FromRoute] string owner,
@@ -35,8 +35,8 @@ namespace Server {
 
 			var repositoryId = repository.Id;
 			var defaultBranchName = repository.DefaultBranch;
-			
-			var existingFile = (await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, "README.md", repository.DefaultBranch)).FirstOrDefault();
+			path = path.Remove(path.Length - 1);
+			var existingFile = (await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, path, repository.DefaultBranch)).FirstOrDefault();
 
 			if (existingFile == null) {
 				throw new ArgumentException("Parameter cannot be null");

@@ -20,16 +20,16 @@ namespace Server
 		/// Get Repo Directory Files
 		/// </summary>
 		/// <returns></returns>
-		[Route("{owner}/{repoName}/{search}")]
+		[Route("{owner}/{repoName}/{path}/dir")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoDirFiles>> GetRepoDirFiles(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
-			[FromRoute] string search
+			[FromRoute] string path
 		) {
 			var client = await NewClient();
 
-			var result = (await client.Repository.Content.GetAllContents(owner, repoName, search))
+			var result = (await client.Repository.Content.GetAllContents(owner, repoName, path))
 				.Where(r => r.Name != "")
 				.OrderByDescending(r => r.Name)
 				.Select(r => new RepoDirFiles(r.Name));

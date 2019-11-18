@@ -20,7 +20,7 @@ namespace Server
 		/// GetFile Controller
 		/// </summary>
 		/// <returns></returns>
-		[Route("{owner}/{repoName}/{path}/file")]
+		[Route("file/{owner}/{repoName}/{**path}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFileContent>> GetFileContent(
 			[FromRoute] string owner,
