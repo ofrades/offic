@@ -1,4 +1,3 @@
-Projecto Final de OOP
-Com o Prof. Fernando Almeida
-
-Ambiente de Trabalho amigável para interacção com Repositório GitHub .NET + C#
+<p>Projecto Final de OOP
+Com o Professor Fernando Almeida</p>
+<p>Ambiente de Trabalho amigável para interacção com Repositório GitHub .NET + C#</p>
