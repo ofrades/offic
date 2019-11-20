@@ -1,14 +1,13 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Shared;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System;
+using System.Text.RegularExpressions;
 
-namespace Client.Components {
+namespace Client.Components
+{
 
 	public partial class ListFiles {
 
@@ -22,82 +21,124 @@ namespace Client.Components {
 		public string content { get; set; }
 
 		[Parameter]
+		public string newContent { get; set; }
+
+		[Parameter]
 		public string path { get; set; }
 
 		[Inject]
 		HttpClient HttpClient { get; set; }
 
 		public bool showEditor = false;
+		public bool showEditorNewFile = false;
 		public bool showDone = false;
 		public bool showList = false;
 		public string _fileContent;
 		public string _fileName;
-		public List<RepoListFiles> _reposList;
-		public List<RepoListFiles> _reposFolders;
-		public List<RepoFileContent> _repoFileContent;
+		List<RepoFile> _reposList;
+		List<RepoFile> _reposFolders;
+		List<RepoFile> _repoFileContent;
 
-		public List<Repo> _reposListStars;
+		List<ReposInfo> _reposListStars;
+		List<string> _urlList = new List<string>();
+		string _urlListPath;
 
-		public async Task GetRepos() {
+		async Task GetRepos() {
 			showList = false;
-			var apiUrl = $"api/{owner}/repos";
-			_reposListStars = await HttpClient.GetJsonAsync<List<Repo>>(apiUrl);
+			var apiUrl = $"api/repos/{owner}";
+			_reposListStars = await HttpClient.GetJsonAsync<List<ReposInfo>>(apiUrl);
 		}
 
 		async Task<string> GetRepoFiles(string _repoName) {
 			repoName = _repoName;
-			var apiUrlFiles = $"api/files/{owner}/{repoName}";
-			_reposList = await HttpClient.GetJsonAsync<List<RepoListFiles>>(apiUrlFiles);
-			var apiUrlFolders = $"api/folders/{owner}/{repoName}";
-			_reposFolders = await HttpClient.GetJsonAsync<List<RepoListFiles>>(apiUrlFolders);
 			showDone = false;
-			showList = true;
 			_reposListStars = null;
+			var apiUrlFiles = $"api/files/{owner}/{repoName}";
+			_reposList = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFiles);
+			var apiUrlFolders = $"api/folders/{owner}/{repoName}";
+			_reposFolders = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFolders);
+			showList = true;
 			return repoName;
 		}
 
-		void ListClose(){
+		void ListClose() {
 			showList = false;
-			path = "";
-		}
-		void EditorClose(){
-			showEditor = false;
-			path = "";
+			_urlList.Clear();
+			_urlListPath = "";
 		}
 
-		async Task<string> GetRepoFilesPath(string _path) {
-			path += $"{_path}/";
-			var apiUrlFiles = $"api/files/{owner}/{repoName}/{path}";
-			_reposList = await HttpClient.GetJsonAsync<List<RepoListFiles>>(apiUrlFiles);
-			var apiUrlFolders = $"api/folders/{owner}/{repoName}/{path}";
-			_reposFolders = await HttpClient.GetJsonAsync<List<RepoListFiles>>(apiUrlFolders);
+		void EditorClose() {
+			showEditor = false;
+			showEditorNewFile = false;
+			PreviousFolder().GetAwaiter();
+		}
+
+		async Task<List<string>> GetRepoFilesPath(string _path) {
+			_urlList.Add(_path);
+			_urlListPath = String.Join("/", _urlList);
+
+			// path += $"{_path}/";
 			_reposListStars = null;
-			return path;
+			var apiUrlFiles = $"api/files/{owner}/{repoName}/{_urlListPath}";
+			_reposList = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFiles);
+			var apiUrlFolders = $"api/folders/{owner}/{repoName}/{_urlListPath}";
+			_reposFolders = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFolders);
+			return _urlList;
 		}
 
-		public async Task<string> GetFile(string _path) {
-			path += $"{_path}/";
+		async Task PreviousFolder(){
 			showEditor = false;
-			var apiUrl = $"api/file/{owner}/{repoName}/{path}";
-			_repoFileContent = await HttpClient.GetJsonAsync<List<RepoFileContent>>(apiUrl);
+			showEditorNewFile = false;
+			showDone = false;
+			_urlList.RemoveAt(_urlList.Count - 1);
+			_urlListPath = String.Join("/", _urlList);
+			var apiUrlFolders = $"api/folders/{owner}/{repoName}/{_urlListPath}";
+			var apiUrlFiles = $"api/files/{owner}/{repoName}/{_urlListPath}";
+			_reposList = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFiles);
+			_reposFolders = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrlFolders);
+		}
+
+		async Task<List<string>> GetFile(string _path) {
+			_urlList.Add(_path);
+			_urlListPath = String.Join("/", _urlList);
+			showEditor = false;
+			showDone = false;
+			_reposListStars = null;
+			var apiUrl = $"api/file/{owner}/{repoName}/{_urlListPath}";
+			_repoFileContent = await HttpClient.GetJsonAsync<List<RepoFile>>(apiUrl);
 			showEditor = true;
-			_reposListStars = null;
-			return path;
+			return _urlList;
 		}
 
-		public async Task UpdateFile() {
-			showDone = true;
-			showList = false;
+		void UpdateFile() {
+			var apiUrl = $"api/update/{owner}/{repoName}/{_urlListPath}";
+			HttpClient.PostJsonAsync<string>(apiUrl, content);
 			showEditor = false;
-			var apiUrl = $"api/update/{owner}/{repoName}/{path}";
-			await HttpClient.PostJsonAsync<string>(apiUrl, content);
-			_reposListStars = null;
-			path = "";
+			PreviousFolder().GetAwaiter();
+			showDone = true;
 		}
 
-		public async Task CreateFile() {
-			var apiUrl = $"api/create/{owner}/{repoName}/{path}";
-			await HttpClient.PostJsonAsync<string>(apiUrl, content);
+		async Task DeleteFile() {
+			var apiUrl = $"api/delete/{owner}/{repoName}/{_urlListPath}";
+			await HttpClient.DeleteAsync(apiUrl);
+			showEditor = false;
+			PreviousFolder().GetAwaiter();
+			showDone = true;
+		}
+
+		void ShowEditorNewFile() {
+			showDone = false;
+			showEditorNewFile = true;
+		}
+
+		void CreateFile() {
+			_urlList.Add("NewFile.md");
+			_urlListPath = String.Join("/", _urlList);
+			var apiUrl = $"api/create/{owner}/{repoName}/{_urlListPath}";
+			HttpClient.PostJsonAsync<string>(apiUrl, newContent);
+			showEditorNewFile = false;
+			PreviousFolder().GetAwaiter();
+			showDone = true;
 		}
 	}
 }

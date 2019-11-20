@@ -1,15 +1,9 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Linq;
 using Octokit;
-using Shared;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
+using System.Linq;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
 	/// DeleteFile Controller
@@ -21,23 +15,32 @@ namespace Server
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
-		[Route("{owner}/{repoName}/delete")]
-		[HttpGet]
+		/// <param name="path"></param>
+		[Route("delete/{owner}/{repoName}/{**path}")]
+		[HttpDelete]
 		public async Task DeleteFile(
 			[FromRoute] string owner,
-			[FromRoute] string repoName
+			[FromRoute] string repoName,
+			[FromRoute] string path
+
 		) {
 			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
+			var existingFile = (await client.Repository.Content.GetAllContentsByRef(
+				owner,
+				repository.Name,
+				path,
+				repository.DefaultBranch))
+					.FirstOrDefault();
 
 			await client.Repository.Content.DeleteFile(
 				owner,
 				repoName,
-				"/README.md",
+				path,
 				new DeleteFileRequest(
 					"File Delete",
-					defaultBranchName));
+					existingFile.Sha));
 		}
 	}
 }

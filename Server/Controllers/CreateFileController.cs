@@ -1,12 +1,6 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Linq;
 using Octokit;
-using Shared;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
 
 namespace Server {
 
@@ -20,15 +14,15 @@ namespace Server {
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
-		/// <param name="title"></param>
+		/// <param name="path"></param>
 		/// <param name="content"></param>
-		[Route("{owner}/{repoName}/{title}/create")]
+		[Route("create/{owner}/{repoName}/{**path}")]
 		[HttpPost]
 		public async Task CreateFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
-			[FromRoute] string title,
-			[FromBody] string content
+			[FromBody] string content,
+			[FromRoute] string path = "NewFile.md"
 		) {
 			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
@@ -37,7 +31,7 @@ namespace Server {
 			var createFile = client.Repository.Content.CreateFile(
 				owner,
 				repoName,
-				title,
+				path,
 				new CreateFileRequest(
 					"File Create",
 					content,

@@ -1,24 +1,31 @@
 ﻿@using Syncfusion.EJ2.Blazor
 @using Syncfusion.EJ2.Blazor.RichTextEditor
 @using Syncfusion.EJ2.Blazor.Inputs
+<div class="container">
+<div class="row">
+    <div class="card mt-2 bg-dark col-sm-12">
+        <div class="card-body">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">Search</span>
+                </div>
+                <input type="text" class="form-control" @bind-value:event="oninput" @bind-value="@owner" placeholder="Add Owner" @onkeyup="async () => await GetRepos()"/>
+                <input type="text" class="form-control" @bind="@repoName" placeholder="Add Repo"/>
+                <button type="button" class="btn btn-primary ml-sm-1" @onclick="async () => await GetRepoFiles(repoName)" href="">Root Dir</button>
 
-<div class="card mt-2 bg-dark">
-    <div class="card-body">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Search</span>
             </div>
-            <input type="text" class="form-control" @bind-value:event="oninput" @bind-value="@owner" placeholder="Add Owner" @onkeyup="async () => await GetRepos()"/>
-            <input type="text" class="form-control" @bind-value:event="oninput" @bind-value="@repoName" placeholder="Add Repo"/>
-
-            <a class="btn btn-primary ml-sm-1" @onclick="async () => await GetRepoFiles(repoName)" href="">Root Dir</a>
-
+            <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">Where Am I?</span>
+                </div>
+                <input type="text" class="form-control" @bind="@_urlListPath" placeholder="RepoRoot" disabled/>
+            </div>
         </div>
     </div>
-</div>
+
 
 @if(_reposListStars != null){
-    <div class="card">
+    <div class="card col-sm-6">
         <div class="card-body">
             @foreach(var item in _reposListStars){
                 <h5 class="card-title">
@@ -32,53 +39,81 @@
     </div>
 }
 
-<div class="row col-12 mx-auto">
 @if(showList == true){
-    <div class="card col-3 mt-2">
-        <div class="card-body">
-            <button type="button" class="close" aria-label="Close" @onclick="ListClose">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class"text-center text-primary">Folders</h4>
+    <ul class="list-group col-sm-3 bg-dark">
+
+            <li class="list-group-item">
+                <button type="button" class="btn btn-primary text-left" href="" @onclick="ShowEditorNewFile" aria-label="New File">
+                    <span class="iconify" data-icon="octicon:diff" data-inline="true"></span> New File
+                </button>
+                <button type="button" class="btn btn-primary text-right" href="" @onclick="PreviousFolder" aria-label="Back">
+                    <span class="iconify" data-icon="octicon:arrow-left" data-inline="true"></span> Back
+                </button>
+                <button type="button" class="btn btn-danger text-right" aria-label="Close" @onclick="ListClose">
+                    <span class="iconify" data-icon="octicon:x" data-inline="true"></span>
+                </button>
+            </li>
+            @if(_reposFolders.Count != 0){
+                <li class="list-group-item bg-primary text-center text-light">Folders</li>
+            }
             @foreach(var item in _reposFolders){
-                    <a href="" class="btn btn-warning btn-block text-left" @onclick="async () => await GetRepoFilesPath(item.Name)"><span class="iconify" data-icon="octicon:file-directory" data-inline="true"></span>  @item.Name</a>
-                <hr>
+                <button type="button" href="" class="list-group-item list-group-item-action bg-light" @onclick="async () => await GetRepoFilesPath(item.Name)">
+                    <span class="iconify" data-icon="octicon:file-directory" data-inline="true"></span>
+                    @item.Name
+                </button>
             }
-            <h4 class="text-center text-primary">Files</h4>
+            @if(_reposList.Count != 0){
+                <li class="list-group-item bg-primary text-center text-light">Files</li>
+            }
             @foreach(var item in _reposList){
-                    <a class="btn btn-primary btn-block text-left" href="" @onclick="async () => await GetFile(item.Name)"><span class="iconify" data-icon="octicon:file" data-inline="true"></span> @item.Name</a>
-                <hr>
+                <button type="button" class="list-group-item list-group-item-action bg-light" href="" @onclick="async () => await GetFile(item.Name)">
+                    <span class="iconify" data-icon="octicon:file" data-inline="true"></span>
+                    @item.Name
+                </button>
             }
-        </div>
-    </div>
+
+    </ul>
 }
 
 @if(showEditor == true){
-    <div class="card col-9 mt-2">
+    <div class="card col-sm-9 bg-dark">
         @foreach(var item in _repoFileContent){
             <div class="card-body">
-                <button type="button" class="close" aria-label="Close" @onclick="EditorClose">
+                <button type="button" class="close text-light" aria-label="Close" @onclick="EditorClose">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="text-center text-primary">@item.Name</h4>
-                <EjsRichTextEditor @bind-Value="@content"> 
+                <h4 class="text-light">@item.Name</h4>
+                <EjsRichTextEditor @bind-value="@content">
                     @Markdig.Markdown.ToHtml(item.Content)
                 </EjsRichTextEditor>
-                @if(content != ""){
-                    <button class="e-btn" type="submit" @onclick="async () => await UpdateFile()">Submit Update</button>
+                @if(content != null){
+                    <button class="e-btn" type="submit" @onclick="UpdateFile">Submit Update</button>
                 }
-                <button class="e-btn" type="submit" @onclick="async () => await UpdateFile()">Delete File</button>
+                <button class="e-btn" type="submit" @onclick="DeleteFile">Delete File</button>
             </div>
         }
     </div>
 }
-</div>
 
-@if(showDone == true){
-    <div class="card col-2 mt-5 mx-auto">
+@if(showEditorNewFile == true) {
+    <div class="card col-sm-9 mt-2">
         <div class="card-body">
-            <h1 class="text-center align-middle text-success"><span class="iconify" data-icon="octicon:check" data-inline="true"></span> Updated</h1>
+            <button type="button" class="close" aria-label="Close" @onclick="EditorClose">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="text-primary">NewFile.md</h4>
+            <EjsRichTextEditor @bind-value="@newContent">
+                
+            </EjsRichTextEditor>
+            <button class="e-btn" type="submit" @onclick="CreateFile">Create File</button>
         </div>
     </div>
 }
 
+@if(showDone == true){
+    <div class="mx-auto">
+            <h1 class="text-center align-middle text-light"><span class="iconify" data-icon="octicon:check" data-inline="false"></span></h1>
+    </div>
+}
+    </div>
+</div>

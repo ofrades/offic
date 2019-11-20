@@ -1,3 +1,0 @@
-###
-GET http://localhost:5001/api/limits HTTP/1.1
-GET http://localhost:5001/api/limits HTTP/1.1

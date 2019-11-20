@@ -1,27 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Shared {
 
 	/// <summary>
 	/// Repo List Files
 	/// </summary>
-	public class RepoFileContent {
+	public class RepoFile {
 
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public RepoFileContent(){}
+		public RepoFile(){}
 
 		/// <summary>
 		/// GitRepo Constructor
 		/// </summary>
 		/// <param name="content"></param>
 		/// <param name="name"></param>
-		public RepoFileContent(string content, string name) {
+		public RepoFile(string content, string name) {
 			Content = content;
+			Name = name;
+		}
+
+		/// <summary>
+		/// GitRepo Constructor
+		/// </summary>
+		/// <param name="name"></param>
+		public RepoFile(string name) {
 			Name = name;
 		}
 

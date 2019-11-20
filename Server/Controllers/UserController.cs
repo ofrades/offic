@@ -18,7 +18,7 @@ namespace Server {
         /// <summary>
         /// Get User
         /// </summary>
-        /// <returns></returns>
+        /// <returns>UserInfo</returns>
 		[HttpGet ("user")]
 		public UserInfo GetUser () {
 			return User.Identity.IsAuthenticated ?
@@ -30,7 +30,6 @@ namespace Server {
         /// Sign In
         /// </summary>
         /// <param name="redirectUri"></param>
-        /// <returns></returns>
 		[HttpGet ("user/signin")]
 		public async Task SignIn (string redirectUri) {
 			if (string.IsNullOrEmpty (redirectUri) || !Url.IsLocalUrl (redirectUri)) {
@@ -45,7 +44,7 @@ namespace Server {
         /// <summary>
         /// Sign Out
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Redirect</returns>
 		[HttpGet ("user/signout")]
 		public async Task<IActionResult> SignOut () {
 			await HttpContext.SignOutAsync (CookieAuthenticationDefaults.AuthenticationScheme);

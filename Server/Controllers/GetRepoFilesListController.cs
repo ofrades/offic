@@ -1,29 +1,24 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
-using Octokit;
 using Shared;
-using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
-	/// GetRepoFiles Controller
+	/// GetRepoFile Controller
 	/// </summary>
 	public partial class GitHubController : Controller {
 
 		/// <summary>
-		/// Get Repo Files
+		/// Get Repo Files List with path
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>RepoFile</returns>
 		[Route("files/{owner}/{repoName}/{**path}")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoListFiles>> GetRepoFilesListPath(
+		public async Task<IEnumerable<RepoFile>> GetRepoFilesListPath(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
 			[FromRoute] string path
@@ -34,18 +29,18 @@ namespace Server
 				.Where(s => new[] { ".md", ".txt" }
 				.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
-				.Select(r => new RepoListFiles(r.Name));
+				.Select(r => new RepoFile(r.Name));
 
 			return result;
 		}
 
 		/// <summary>
-		/// Get Repo Files
+		/// Get Repo Folders with path
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>RepoFile</returns>
 		[Route("folders/{owner}/{repoName}/{**path}")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoListFiles>> GetRepoFoldersListPath(
+		public async Task<IEnumerable<RepoFile>> GetRepoFoldersListPath(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
 			[FromRoute] string path
@@ -56,18 +51,18 @@ namespace Server
 				.Where(s => new[] { "" }
 				.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
-				.Select(r => new RepoListFiles(r.Name));
+				.Select(r => new RepoFile(r.Name));
 
 			return result;
 		}
 
 		/// <summary>
-		/// Get Repo Files
+		/// Get Repo File List without path
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>RepoFile</returns>
 		[Route("files/{owner}/{repoName}")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoListFiles>> GetRepoFilesList(
+		public async Task<IEnumerable<RepoFile>> GetRepoFilesList(
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
@@ -77,18 +72,18 @@ namespace Server
 				.Where(s => new[] { ".md", ".txt" }
 				.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
-				.Select(r => new RepoListFiles(r.Name));
+				.Select(r => new RepoFile(r.Name));
 
 			return result;
 		}
 
 		/// <summary>
-		/// Get Repo Files
+		/// Get Repo Folders List without path
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>RepoFile</returns>
 		[Route("folders/{owner}/{repoName}")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoListFiles>> GetRepoFoldersList(
+		public async Task<IEnumerable<RepoFile>> GetRepoFoldersList(
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
@@ -98,7 +93,7 @@ namespace Server
 				.Where(s => new[] { "" }
 				.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
-				.Select(r => new RepoListFiles(r.Name));
+				.Select(r => new RepoFile(r.Name));
 
 			return result;
 		}

@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Shared {
 
 	/// <summary>
-	/// Repo
+	/// Owner Repos info 
 	/// </summary>
-	public class Repo {
+	public class ReposInfo {
 
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public Repo(){}
+		public ReposInfo(){}
 
 		/// <summary>
 		/// Repo Constructor
@@ -22,7 +17,7 @@ namespace Shared {
 		/// <param name="fullName"></param>
 		/// <param name="description"></param>
 		/// <param name="stargazersCount"></param>
-		public Repo(string name, string fullName, string description, int stargazersCount){
+		public ReposInfo(string name, string fullName, string description, int stargazersCount){
 			Name = name;
 			FullName = fullName;
 			Description = description;
@@ -33,7 +28,7 @@ namespace Shared {
 		/// Repo Constructor Sort by Stars
 		/// </summary>
 		/// <param name="stargazersCount"></param>
-		public Repo(int stargazersCount){
+		public ReposInfo(int stargazersCount){
 			StargazersCount = stargazersCount;
 		}
 

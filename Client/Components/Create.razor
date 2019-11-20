@@ -18,7 +18,7 @@
     </div>
 </div>
 
-@if (@showEditor) {
+@if(showEditor) {
 
     <div class="main mt-3">
         <div class="card">
@@ -44,7 +44,7 @@
 
     private async Task CreateFile() {
         //IsLoading = true;
-        var apiUrl = $"api/{owner}/{repoName}/{title}/create";
+        var apiUrl = $"api/create/{owner}/{repoName}/{title}";
         var update = await HttpClient.PostJsonAsync<string>(apiUrl, content);
     }
 

@@ -1,20 +1,18 @@
-using System;
-
 namespace Shared {
 
 	/// <summary>
-	/// Shared User Info
+	/// User Info Shared between Server-Side and Client-Side
 	/// </summary>
 	public class UserInfo {
 
 		/// <summary>
-		/// Shared User Info Is Authenticated?
+		/// Check if user is authenticated
 		/// </summary>
 		/// <value></value>
 		public bool IsAuthenticated { get; set; }
 
 		/// <summary>
-		/// Shared User Name
+		/// User name
 		/// </summary>
 		/// <value></value>
 		public string Name { get; set; }

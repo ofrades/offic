@@ -1,15 +1,10 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
-using Octokit;
 using Shared;
-using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
 	/// Github Controller
@@ -17,21 +12,20 @@ namespace Server
 	public partial class GitHubController : Controller {
 
 		/// <summary>
-		/// GetFile Controller
+		/// Get File Controller with path
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>RepoFile</returns>
 		[Route("file/{owner}/{repoName}/{**path}")]
 		[HttpGet]
-		public async Task<IEnumerable<RepoFileContent>> GetFileContent(
+		public async Task<IEnumerable<RepoFile>> GetFileContent(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
 			[FromRoute] string path
-			
 		) {
 			var client = await NewClient();
 
 			var result = (await client.Repository.Content.GetAllContentsByRef(owner, repoName, path, "master"))
-				.Select(r => new RepoFileContent(r.Content, r.Name));
+				.Select(r => new RepoFile(r.Content, r.Name));
 
 			return result;
 		}

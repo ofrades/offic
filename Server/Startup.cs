@@ -1,24 +1,18 @@
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.OpenApi.Models;
-using Shared;
 
 namespace Server {
 
-    /// <summary>
-    /// Server Startup
-    /// </summary>
+	/// <summary>
+	/// Server Startup
+	/// </summary>
 	public class Startup {
 
         /// <summary>

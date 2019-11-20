@@ -1,15 +1,8 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Linq;
-using Octokit;
 using Shared;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
 
-namespace Server
-{
+namespace Server {
 
 	/// <summary>
 	/// GetReadme Controller
@@ -18,7 +11,7 @@ namespace Server
 	public partial class GitHubController : Controller {
 
 		/// <summary>
-		/// Get Readme
+		/// Get Main Readme File
 		/// </summary>
 		/// <returns>GitReadme</returns>
 		[Route("{owner}/{repoName}/readme")]

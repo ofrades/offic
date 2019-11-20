@@ -1,12 +1,8 @@
 using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using Octokit;
-using Shared;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
 
 namespace Server {
 
@@ -35,8 +31,12 @@ namespace Server {
 
 			var repositoryId = repository.Id;
 			var defaultBranchName = repository.DefaultBranch;
-			path = path.Remove(path.Length - 1);
-			var existingFile = (await client.Repository.Content.GetAllContentsByRef(owner, repository.Name, path, repository.DefaultBranch)).FirstOrDefault();
+			var existingFile = (await client.Repository.Content.GetAllContentsByRef(
+				owner,
+				repository.Name,
+				path,
+				repository.DefaultBranch))
+					.FirstOrDefault();
 
 			if (existingFile == null) {
 				throw new ArgumentException("Parameter cannot be null");
