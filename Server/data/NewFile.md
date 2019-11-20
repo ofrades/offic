@@ -1,0 +1,1 @@
+<p>This is a new file inside a folder</p>
