@@ -5,7 +5,7 @@ using Shared;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// GetRepoFile Controller

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Shared;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// GetReadme Controller

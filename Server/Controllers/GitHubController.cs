@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Octokit;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// Get Api Limits Controller and Create New Client

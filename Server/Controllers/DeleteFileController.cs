@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Octokit;
 using System.Linq;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// DeleteFile Controller

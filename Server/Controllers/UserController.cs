@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
 
-namespace Server {
+namespace Server.Controllers {
 
     /// <summary>
     /// User Controller

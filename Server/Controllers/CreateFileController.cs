@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Octokit;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// CreateFile Controller

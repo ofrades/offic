@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Octokit;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// UpdateFile Controller

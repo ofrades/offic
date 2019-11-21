@@ -4,7 +4,7 @@ using System.Linq;
 using Shared;
 using System.Collections.Generic;
 
-namespace Server {
+namespace Server.Controllers {
 
 	/// <summary>
 	/// Github Controller
