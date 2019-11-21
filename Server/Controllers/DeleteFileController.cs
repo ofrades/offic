@@ -15,18 +15,20 @@ namespace Server.Controllers {
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
+        /// <param name="message"></param>
 		/// <param name="path"></param>
-		[Route("delete/{owner}/{repoName}/{**path}")]
+		[Route("delete/{owner}/{repoName}/{message}/{**path}")]
 		[HttpDelete]
 		public async Task DeleteFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
+            [FromRoute] string message,
 			[FromRoute] string path
 
 		) {
 			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
-			var defaultBranchName = repository.DefaultBranch;
+
 			var existingFile = (await client.Repository.Content.GetAllContentsByRef(
 				owner,
 				repository.Name,
@@ -39,7 +41,7 @@ namespace Server.Controllers {
 				repoName,
 				path,
 				new DeleteFileRequest(
-					"File Delete",
+					message,
 					existingFile.Sha));
 		}
 	}

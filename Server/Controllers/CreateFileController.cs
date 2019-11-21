@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Octokit;
+using Html2Markdown;
 
 namespace Server.Controllers {
 
@@ -14,27 +15,31 @@ namespace Server.Controllers {
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
+		/// <param name="message"></param>
 		/// <param name="path"></param>
 		/// <param name="content"></param>
-		[Route("create/{owner}/{repoName}/{**path}")]
+		[Route("create/{owner}/{repoName}/{message}/{**path}")]
 		[HttpPost]
 		public async Task CreateFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
-			[FromBody] string content,
-			[FromRoute] string path = "NewFile.md"
+            [FromRoute] string message,
+			[FromRoute] string path,
+			[FromBody] string content
 		) {
 			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
-			
+			var converter = new Converter();
+			var createdContent = converter.Convert(content);
+
 			var createFile = client.Repository.Content.CreateFile(
 				owner,
 				repoName,
 				path,
 				new CreateFileRequest(
-					"File Create",
-					content,
+					message,
+					createdContent,
 					defaultBranchName,
 					true
 				)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using Octokit;
+using Html2Markdown;
 
 namespace Server.Controllers {
 
@@ -16,15 +17,17 @@ namespace Server.Controllers {
 		/// </summary>
 		/// <param name="owner"></param>
 		/// <param name="repoName"></param>
+        /// <param name="message"></param>
 		/// <param name="path"></param>
-		/// <param name="updatedContent"></param>
-		[Route("update/{owner}/{repoName}/{**path}")]
+		/// <param name="content"></param>
+		[Route("update/{owner}/{repoName}/{message}/{**path}")]
 		[HttpPost]
 		public async Task UpdateFile(
 			[FromRoute] string owner,
 			[FromRoute] string repoName,
+            [FromRoute] string message,
 			[FromRoute] string path,
-			[FromBody] string updatedContent
+			[FromBody] string content
 		) {
 			var client = await NewClient();
 			var repository = await client.Repository.Get(owner, repoName);
@@ -42,12 +45,15 @@ namespace Server.Controllers {
 				throw new ArgumentException("Parameter cannot be null");
 			}
 
+			var converter = new Converter();
+			var updatedContent = converter.Convert(content);
+
 			var updateFile = await client.Repository.Content.UpdateFile(
 				owner,
 				repoName,
 				path,
 				new UpdateFileRequest(
-					"Success: Updated File",
+					message,
 					updatedContent,
 					existingFile.Sha,
 					defaultBranchName

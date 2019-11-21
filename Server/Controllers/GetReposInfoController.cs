@@ -18,11 +18,11 @@ namespace Server.Controllers {
 		[Route("repos/{owner}")]
 		[HttpGet]
 		public async Task<IEnumerable<ReposInfo>> GetRepo(
-			[FromRoute] string owner
+			[FromRoute] string owner = ""
 		) {
 			var client = await NewClient();
 			var repos = (await client.Repository.GetAllForUser(owner))
-				.Where(r => r.Name != "")
+				.Where(r => r.Name == r.Name)
 				.OrderByDescending(r => r.StargazersCount)
 				.Select(r => new ReposInfo (r.Name, r.FullName, r.Description, r.StargazersCount))
 				.Take(10);
