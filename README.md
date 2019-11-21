@@ -15,12 +15,3 @@ Com o Professor Fernando Almeida
 
 
 `Done with Blazor => .NET => C#`
-
-
-# ``
-
-
-
-> ``
-
-
