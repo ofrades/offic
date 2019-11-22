@@ -1,6 +1,3 @@
-.vscode/
-.vscode/launch.json
-.vscode/tasks.json
 *.code-workspace
 *.DS_Store
 .git/
@@ -19,4 +16,5 @@ Server/Properties/
 Server/appsettings.Development.json
 Server/appsettings.json
 Server/publish/
+.vscode
 
