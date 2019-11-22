@@ -18,3 +18,5 @@ Client/Properties/
 Server/Properties/
 Server/appsettings.Development.json
 Server/appsettings.json
+Server/publish/
+
