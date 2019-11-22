@@ -82,10 +82,9 @@ namespace Server.Controllers {
 			[FromRoute] string repoName
 		) {
 			var client = await _authorizeClient.Authorize();
-
+			var allowedExtensions = new[] { ".md", ".txt" };
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName))
-				.Where(s => new[] { ".md", ".txt" }
-				.Any(e => e == Path.GetExtension(s.Name)))
+				.Where(s => allowedExtensions.Contains(Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
 				.Select(r => new RepoFile(r.Name));
 
@@ -105,8 +104,7 @@ namespace Server.Controllers {
 			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName))
-				.Where(s => new[] { "" }
-				.Any(e => e == Path.GetExtension(s.Name)))
+				.Where(s => string.IsNullOrEmpty(Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
 				.Select(r => new RepoFile(r.Name));
 

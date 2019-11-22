@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.ItemProperties.Server PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Client/Components/ListFiles.razor">
     <Files>
-      <File FileName="Client/Components/ListFiles.razor" Line="25" Column="19" />
+      <File FileName="Client/Components/ListFiles.razor" Line="151" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
