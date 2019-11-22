@@ -4,13 +4,28 @@ using System.Linq;
 using Shared;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// GetRepoFile Controller
 	/// </summary>
-	public partial class GitHubController : Controller {
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class GetRepoFilesListController : Controller {
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public GetRepoFilesListController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Get Repo Files List with path
@@ -23,7 +38,7 @@ namespace Server.Controllers {
 			[FromRoute] string repoName,
 			[FromRoute] string path
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName, path))
 				.Where(s => new[] { ".md", ".txt" }
@@ -45,7 +60,7 @@ namespace Server.Controllers {
 			[FromRoute] string repoName,
 			[FromRoute] string path
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName, path))
 				.Where(s => new[] { "" }
@@ -66,7 +81,7 @@ namespace Server.Controllers {
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName))
 				.Where(s => new[] { ".md", ".txt" }
@@ -87,7 +102,7 @@ namespace Server.Controllers {
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName))
 				.Where(s => new[] { "" }

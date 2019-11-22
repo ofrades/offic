@@ -33,7 +33,7 @@ namespace Shared {
 		}
 
 		/// <summary>
-		/// Git Repo Name
+		/// Repo Name
 		/// </summary>
 		/// <value></value>
 		public string Name { get; set; }

@@ -3,13 +3,29 @@ using System.Threading.Tasks;
 using System.Linq;
 using Shared;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// Get Repo Info Controller
 	/// </summary>
-	public partial class GitHubController : Controller {
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class GetReposInfoController : Controller {
+
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public GetReposInfoController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Get Repo Info Controller
@@ -20,7 +36,7 @@ namespace Server.Controllers {
 		public async Task<IEnumerable<ReposInfo>> GetRepo(
 			[FromRoute] string owner = ""
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 			var repos = (await client.Repository.GetAllForUser(owner))
 				.Where(r => r.Name == r.Name)
 				.OrderByDescending(r => r.StargazersCount)

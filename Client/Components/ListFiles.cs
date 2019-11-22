@@ -5,7 +5,7 @@ using Shared;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
-using Client.Validation;
+using Shared.Validation;
 
 namespace Client.Components {
 
@@ -136,10 +136,6 @@ namespace Client.Components {
 
 		private void HandleValidSubmit() {
 			Console.WriteLine("OnValidSubmit");
-		}
-
-		protected override async Task OnInitializedAsync(){
-			_reposListStars = await HttpClient.GetJsonAsync<List<ReposInfo>>($"api/repos/");
 		}
 	}
 }

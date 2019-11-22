@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Octokit;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Server.Controllers {
 
@@ -13,23 +14,19 @@ namespace Server.Controllers {
 	[Route("api")]
 	[ApiController]
 	[Authorize]
-	public partial class GitHubController : Controller {
+	public class GetApiLimitController : Controller {
+
+		private readonly AuthorizeClient _authorizeClient;
 
 		/// <summary>
-		/// Create New Client
+		/// 
 		/// </summary>
-		/// <returns>GitHubClient</returns>
-		public async Task<GitHubClient> NewClient() {
-			var authResult = await HttpContext.AuthenticateAsync();
-			if (!authResult.Succeeded) {
-				throw new Exception("Not Authenticated");
-			}
-			var accessToken = authResult.Properties.Items[".Token.access_token"];
-			var client = new GitHubClient(new ProductHeaderValue("offic"));
-			client.Credentials = new Credentials(accessToken);
-			return client;
+		/// <param name="authorizeClient"></param>
+		public GetApiLimitController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
 		}
-
 		/// <summary>
 		/// Get Rate Limits
 		/// </summary>
@@ -37,7 +34,7 @@ namespace Server.Controllers {
 		[Route("limits")]
 		[HttpGet]
 		public async Task<string> GetApiLimit() {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
             var limits = await client.Miscellaneous.GetRateLimits();
             var rateLimits =  String.Format(
                 "Rate(Limit:{0}, Remaining:{1}), Core(Limit:{2}, Remaining:{3}), Search(Limits:{4}, Remaining:{5})",

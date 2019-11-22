@@ -2,13 +2,30 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Octokit;
 using Html2Markdown;
+using Shared.Validation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// CreateFile Controller
 	/// </summary>
-	public partial class GitHubController : Controller {
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class CreateFileController : Controller {
+
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public CreateFileController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Create File
@@ -27,7 +44,7 @@ namespace Server.Controllers {
 			[FromRoute] string path,
 			[FromBody] string content
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 			var repository = await client.Repository.Get(owner, repoName);
 			var defaultBranchName = repository.DefaultBranch;
 			var converter = new Converter();

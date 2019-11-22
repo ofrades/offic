@@ -1,14 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// GetReadme Controller
 	/// </summary>
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class GetReadmeController : Controller {
 
-	public partial class GitHubController : Controller {
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public GetReadmeController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Get Main Readme File
@@ -20,7 +35,7 @@ namespace Server.Controllers {
 			[FromRoute] string owner,
 			[FromRoute] string repoName
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 			var readme = await client.Repository.Content.GetReadme(owner, repoName);
 
 			var gitReadme = new RepoReadme {

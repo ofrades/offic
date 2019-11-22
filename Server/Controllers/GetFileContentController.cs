@@ -3,13 +3,29 @@ using System.Threading.Tasks;
 using System.Linq;
 using Shared;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// Github Controller
 	/// </summary>
-	public partial class GitHubController : Controller {
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class GetFileContentController : Controller {
+
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public GetFileContentController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Get File Controller with path
@@ -22,7 +38,7 @@ namespace Server.Controllers {
 			[FromRoute] string repoName,
 			[FromRoute] string path
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContentsByRef(owner, repoName, path, "master"))
 				.Select(r => new RepoFile(r.Content, r.Name));

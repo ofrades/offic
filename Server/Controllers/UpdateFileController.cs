@@ -4,13 +4,29 @@ using System.Threading.Tasks;
 using System.Linq;
 using Octokit;
 using Html2Markdown;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers {
 
 	/// <summary>
 	/// UpdateFile Controller
 	/// </summary>
-	public partial class GitHubController : Controller {
+	[Route("api")]
+	[ApiController]
+	[Authorize]
+	public class UpdateFileController : Controller {
+
+		private readonly AuthorizeClient _authorizeClient;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="authorizeClient"></param>
+		public UpdateFileController(
+			AuthorizeClient authorizeClient
+		) {
+			_authorizeClient = authorizeClient;
+		}
 
 		/// <summary>
 		/// Update File
@@ -29,7 +45,7 @@ namespace Server.Controllers {
 			[FromRoute] string path,
 			[FromBody] string content
 		) {
-			var client = await NewClient();
+			var client = await _authorizeClient.Authorize();
 			var repository = await client.Repository.Get(owner, repoName);
 
 			var repositoryId = repository.Id;

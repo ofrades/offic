@@ -11,7 +11,7 @@ namespace Shared {
 		public RepoFile(){}
 
 		/// <summary>
-		/// GitRepo Constructor
+		/// Repo Constructor
 		/// </summary>
 		/// <param name="content"></param>
 		/// <param name="name"></param>
@@ -21,7 +21,7 @@ namespace Shared {
 		}
 
 		/// <summary>
-		/// GitRepo Constructor
+		/// Repo Constructor
 		/// </summary>
 		/// <param name="name"></param>
 		public RepoFile(string name) {

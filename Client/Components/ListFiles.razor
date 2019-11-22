@@ -92,16 +92,14 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-
                 <EjsRichTextEditor @bind-Value="@UpdateContent.content">
                     @Markdig.Markdown.ToHtml(item.Content)
                 </EjsRichTextEditor>
                 <InputText type="text" class="form-control" @bind-Value="@UpdateContent.commitMessage" placeholder="Commit Message" />
-                @if (UpdateContent.content != null)
-                {
+                @if (UpdateContent.content != null && UpdateContent.commitMessage != "") {
                     <button class="btn btn-primary" type="submit" @onclick="UpdateFile">Submit Update</button>
+                    <button class="btn btn-danger" type="submit" @onclick="DeleteFile">Delete File</button>
                 }
-                <button class="btn btn-danger" type="submit" @onclick="DeleteFile">Delete File</button>
             </EditForm>
 
             </div>
@@ -115,7 +113,7 @@
                 <button type="button" class="close text-light" aria-label="Close" @onclick="EditorClose">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="text-light">@NewContent.newFileName</h4>
+                <h4 class="text-light">@NewContent.newFileName@NewContent.newFileExtension</h4>
 
             <EditForm Model="@NewContent" OnValidSubmit="@CreateFile">
                 <DataAnnotationsValidator />
@@ -135,7 +133,9 @@
 
                 </EjsRichTextEditor>
                     <InputText type="text" class="form-control" @bind-Value="@NewContent.commitMessage" placeholder="Commit Message" />
-                    <button class="btn btn-primary" type="submit">Create File</button>
+                    @if(NewContent.commitMessage != "" && NewContent.newContent != null && NewContent.newFileExtension != null && NewContent.newFileName != null){
+                        <button class="btn btn-primary" type="submit">Create File</button>
+                    }
             </EditForm>
             </div>
         </div>

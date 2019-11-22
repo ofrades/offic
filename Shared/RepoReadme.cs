@@ -6,7 +6,7 @@ namespace Shared {
 	public class RepoReadme {
 
         /// <summary>
-        /// Reame File Name
+        /// Readme File Name
         /// </summary>
         /// <value></value>
         public string Name { get; set; }
