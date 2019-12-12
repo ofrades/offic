@@ -1,17 +1,8 @@
 
 
-# Projecto Final de OOP
+# Offic
 
-
-
-
-Com o Professor Fernando Almeida
-
-
-
-### Ambiente de Trabalho amigável para interacção com Repositórios GitHub
-
-
+<div>Friendly interaction with the text and markdown files in your GitHub Repository.</div>
 
 
 `Done with Blazor => .NET => C#`
