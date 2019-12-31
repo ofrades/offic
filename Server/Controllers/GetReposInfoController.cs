@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
-using Shared;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
 namespace Server.Controllers {
 
@@ -40,7 +40,7 @@ namespace Server.Controllers {
 			var repos = (await client.Repository.GetAllForUser(owner))
 				.Where(r => r.Name == r.Name)
 				.OrderByDescending(r => r.StargazersCount)
-				.Select(r => new ReposInfo (r.Name, r.FullName, r.Description, r.StargazersCount))
+				.Select(r => new ReposInfo(r.Name, r.FullName, r.Description, r.StargazersCount))
 				.Take(10);
 
 			return repos;

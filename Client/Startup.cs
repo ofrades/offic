@@ -7,20 +7,21 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Client {
 
 	public class Startup {
-
-		public void ConfigureServices (IServiceCollection services) {
-			services.AddAuthorizationCore ();
-			services.AddScoped<AuthenticationStateProvider, 
-			ServerAuthenticationStateProvider> ();
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddAuthorizationCore();
+			services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 			services
-				.AddBlazorise ()
-				.AddBootstrapProviders ();
+				.AddBlazorise()
+				.AddBootstrapProviders();
+			services.AddScoped<AppState>();
+			services.AddScoped<ListState>();
+			services.AddScoped<EditorState>();
 		}
 
-		public void Configure (IComponentsApplicationBuilder app) {
+		public void Configure(IComponentsApplicationBuilder app) {
 			app.Services
-				.UseBootstrapProviders ();
-			app.AddComponent<App> ("app");
+				.UseBootstrapProviders();
+			app.AddComponent<App>("app");
 		}
 	}
 }

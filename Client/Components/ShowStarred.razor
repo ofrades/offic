@@ -1,0 +1,25 @@
+@inject AppState AppState
+
+@if(AppState.reposListStars != null && AppState.repoList == null){
+    <div class="col-sm-12">
+        <h4 class="text-center text-light mt-1">10 Most Starred Repos from @AppState.owner</h4>
+        <div class="card-body">
+            @foreach(var item in AppState.reposListStars){
+                <h5 class="card-title">
+                    <a class="btn btn-primary" href="">@item.FullName
+                        <span class="badge-primary p-1 rounded-lg">@item.StargazersCount <span class="iconify" data-icon="octicon:star"></span></span>
+                    </a>
+                </h5>
+                
+                <p class="card-text text-light"><a class="text-muted">Description: </a>@item.Description</p>
+                <hr>
+            }
+        </div>
+    </div>
+}
+
+@code{
+    protected override void OnInitialized() {
+        AppState.OnChange += StateHasChanged;
+    }
+}

@@ -7,35 +7,36 @@
 <div class="row bg-dark rounded">
     <div class="mt-2 col-sm-12">
         <div class="card-body">
-
+            
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Search</span>
                 </div>
-                <input type="text" class="form-control" @bind-value="@Repo.owner" @bind-value:event="oninput" placeholder="Add Owner" @onkeyup="async () => await GetRepos()"/>
-                <input type="text" class="form-control" @bind-value="@Repo.repoName" placeholder="Add Repo"/>
-                <button type="submit" class="btn btn-primary ml-sm-1" @onclick="async () => await GetRepoFiles(Repo.repoName)" href="">Root Dir</button>
+                <input type="text" class="form-control" @bind-value="@owner" @bind-value:event="oninput" placeholder="Add Owner" @onkeyup="async () => await GetRepos()"/>
+                <input type="text" class="form-control" @bind-value="@repoName" placeholder="Add Repo"/>
+                <button type="submit" class="btn btn-primary ml-sm-1" @onclick="async () => await GetRepoFiles(repoName)" href="">Root Dir</button>
             </div>
             <div class="input-group mt-1">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Path</span>
                 </div>
-                <input type="text" class="form-control" @bind="@_urlListPath" placeholder=":root" disabled/>
+                <input type="text" class="form-control" @bind="@urlListPath" placeholder=":root" disabled/>
 
             </div>
         </div>
     </div>
 
-    @if(_reposListStars != null){
+    @if(reposListStars != null){
         <div class="col-sm-12">
-            <h4 class="text-center text-light">10 Most Starred Repos from @Repo.owner</h4>
+            <h4 class="text-center text-light">10 Most Starred Repos from @owner</h4>
             <div class="card-body">
-                @foreach(var item in _reposListStars){
+                @foreach(var item in reposListStars){
                     <h5 class="card-title">
                         <a class="btn btn-primary" href="" @onclick="async () => await GetRepoFiles(item.Name)">@item.FullName
                             <span class="badge-primary p-1 rounded-lg">@item.StargazersCount <span class="iconify" data-icon="octicon:star"></span></span>
                         </a>
                     </h5>
+                    
                     <p class="card-text text-light"><a class="text-muted">Description: </a>@item.Description</p>
                     <hr>
                 }
@@ -46,42 +47,42 @@
     @if(showList == true){
         <ul class="list-group col-sm-3">
 
-                <li class="list-group-item">
-                    <button type="button" class="btn btn-primary text-left" href="" @onclick="ShowEditorNewFile" aria-label="New File">
-                        <span class="iconify" data-icon="octicon:diff" data-inline="true"></span> New File
-                    </button>
-                    <button type="button" class="btn btn-primary text-right" href="" @onclick="PreviousFolder" aria-label="Back">
-                        <span class="iconify" data-icon="octicon:arrow-left" data-inline="true"></span> Back
-                    </button>
-                    <button type="button" class="btn btn-danger text-right" aria-label="Close" @onclick="ListClose">
-                        <span class="iconify" data-icon="octicon:x" data-inline="true"></span>
-                    </button>
-                </li>
-                @if(_reposFolders.Count != 0){
-                    <li class="list-group-item bg-primary text-center text-light">Folders</li>
-                }
-                @foreach(var item in _reposFolders){
-                    <button type="button" href="" class="list-group-item list-group-item-action bg-light" @onclick="async () => await GetRepoFilesPath(item.Name)">
-                        <span class="iconify" data-icon="octicon:file-directory" data-inline="true"></span>
-                        @item.Name
-                    </button>
-                }
-                @if(_reposList.Count != 0){
-                    <li class="list-group-item bg-primary text-center text-light">Files</li>
-                }
-                @foreach(var item in _reposList){
-                    <button type="button" class="list-group-item list-group-item-action bg-light" href="" @onclick="async () => await GetFile(item.Name)">
-                        <span class="iconify" data-icon="octicon:file" data-inline="true"></span>
-                        @item.Name
-                    </button>
-                }
+            <li class="list-group-item">
+                <button type="button" class="btn btn-primary text-left" href="" @onclick="ShowEditorNewFile" aria-label="New File">
+                    <span class="iconify" data-icon="octicon:diff" data-inline="true"></span> New
+                </button>
+                <button type="button" class="btn btn-primary text-right" href="" @onclick="PreviousFolder" aria-label="Back">
+                    <span class="iconify" data-icon="octicon:arrow-left" data-inline="true"></span>
+                </button>
+                <button type="button" class="btn btn-danger text-right" aria-label="Close" @onclick="ListClose">
+                    <span class="iconify" data-icon="octicon:x" data-inline="true"></span>
+                </button>
+            </li>
+            @if(reposFolders.Count != 0){
+                <li class="list-group-item bg-primary text-center text-light">Folders</li>
+            }
+            @foreach(var item in reposFolders){
+                <button type="button" href="" class="list-group-item list-group-item-action bg-light" @onclick="async () => await GetRepoFilesPath(item.Name)">
+                    <span class="iconify" data-icon="octicon:file-directory" data-inline="true"></span>
+                    @item.Name
+                </button>
+            }
+            @if(reposList.Count != 0){
+                <li class="list-group-item bg-primary text-center text-light">Files</li>
+            }
+            @foreach(var item in reposList){
+                <button type="button" class="list-group-item list-group-item-action bg-light" href="" @onclick="async () => await GetFile(item.Name)">
+                    <span class="iconify" data-icon="octicon:file" data-inline="true"></span>
+                    @item.Name
+                </button>
+            }
 
         </ul>
     }
 
     @if(showEditor == true){
         <div class="col-sm-9">
-            @foreach(var item in _repoFileContent){
+            @foreach(var item in repoFileContent){
             <div class="card-body">
                 <button type="button" class="close text-light" aria-label="Close" @onclick="EditorClose">
                     <span aria-hidden="true">&times;</span>
@@ -92,11 +93,11 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-                <EjsRichTextEditor @bind-Value="@UpdateContent.content">
+                <EjsRichTextEditor @bind-Value="@content">
                     @Markdig.Markdown.ToHtml(item.Content)
                 </EjsRichTextEditor>
-                <InputText type="text" class="form-control" @bind-Value="@UpdateContent.commitMessage" placeholder="Commit Message" />
-                @if (UpdateContent.content != null && UpdateContent.commitMessage != "") {
+                <InputText type="text" class="form-control" @bind-Value="@commitMessage" placeholder="Commit Message" />
+                @if (content != null && commitMessage != "") {
                     <button class="btn btn-primary" type="submit" @onclick="UpdateFile">Submit Update</button>
                     <button class="btn btn-danger" type="submit" @onclick="DeleteFile">Delete File</button>
                 }
@@ -113,7 +114,7 @@
                 <button type="button" class="close text-light" aria-label="Close" @onclick="EditorClose">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="text-light">@NewContent.newFileName@NewContent.newFileExtension</h4>
+                <h4 class="text-light">@newFileName@newFileExtension</h4>
 
             <EditForm Model="@NewContent" OnValidSubmit="@CreateFile">
                 <DataAnnotationsValidator />
@@ -121,19 +122,19 @@
 
 
                 <div class="input-group">
-                    <InputText type="text" class="form-control" @bind-Value="@NewContent.newFileName" placeholder="File name" />
-                    <select class="form-control" @bind="NewContent.newFileExtension">
+                    <InputText type="text" class="form-control" @bind-Value="@newFileName" placeholder="File name" />
+                    <select class="form-control" @bind="newFileExtension">
                         <option selected>File Extension</option>
                         <option value=".md">Markdown</option>
                         <option value=".txt">Plain Text</option>
                     </select>
                 </div>
                 
-                <EjsRichTextEditor @bind-Value="@NewContent.newContent">
+                <EjsRichTextEditor @bind-Value="@newContent">
 
                 </EjsRichTextEditor>
-                    <InputText type="text" class="form-control" @bind-Value="@NewContent.commitMessage" placeholder="Commit Message" />
-                    @if(NewContent.commitMessage != "" && NewContent.newContent != null && NewContent.newFileExtension != null && NewContent.newFileName != null){
+                    <InputText type="text" class="form-control" @bind-Value="@commitMessage" placeholder="Commit Message" />
+                    @if(commitMessage != "" && newContent != null && newFileExtension != null && newFileName != null){
                         <button class="btn btn-primary" type="submit">Create File</button>
                     }
             </EditForm>

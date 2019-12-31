@@ -1,9 +1,9 @@
-namespace Shared {
+namespace Shared.Models {
 
-	/// <summary>
-	/// Readme Class
-	/// </summary>
-	public class RepoReadme {
+    /// <summary>
+    /// Readme Class
+    /// </summary>
+    public class RepoReadme {
 
         /// <summary>
         /// Readme File Name

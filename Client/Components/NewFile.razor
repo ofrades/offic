@@ -1,0 +1,53 @@
+@inject AppState AppState
+@inject ListState ListState
+@inject EditorState EditorState
+
+@using Syncfusion.EJ2.Blazor
+@using Syncfusion.EJ2.Blazor.RichTextEditor
+@using Syncfusion.EJ2.Blazor.Inputs
+
+@if(ListState.showEditorNewFile == true) {
+	<div class="col-sm-9">
+		<div class="card-body">
+			<button type="button" class="close text-light" aria-label="Close" @onclick="ListState.EditorClose">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="text-light">@newFileName@newFileExtension</h4>
+
+		<EditForm Model="@EditorState.NewContent">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+
+			<div class="input-group">
+				<InputText type="text" class="form-control" @bind-Value="@newFileName" placeholder="File name" />
+				<select class="form-control" @bind="newFileExtension">
+					<option selected value="">File Extension</option>
+					<option value=".md">Markdown</option>
+					<option value=".txt">Plain Text</option>
+				</select>
+			</div>
+			
+			<EjsRichTextEditor @bind-Value="@newContent">
+
+			</EjsRichTextEditor>
+				<InputText type="text" class="form-control" @bind-Value="@commitMessage" placeholder="Commit Message" />
+				@if(!String.IsNullOrEmpty(commitMessage) && !String.IsNullOrEmpty(newContent) && !String.IsNullOrEmpty(newFileExtension) && !String.IsNullOrEmpty(newFileName)){
+					<button class="btn btn-primary" type="submit" @onclick="() => EditorState.CreateFile(commitMessage,newContent,newFileName,newFileExtension)">Create File</button>
+				}
+		</EditForm>
+		</div>
+	</div>
+}
+
+@code{
+	string newContent = "";
+	string commitMessage = "";
+	string newFileExtension = "";
+	string newFileName = "";
+
+	protected override void OnInitialized() {
+        AppState.OnChange += StateHasChanged;
+        ListState.OnChange += StateHasChanged;
+    }
+}

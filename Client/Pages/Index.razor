@@ -1,13 +1,11 @@
 ﻿@layout MainLayout
+@inject AppState AppState
 @page "/"
 
 @using Client.Shared
 @using Client.Components		
-@using Newtonsoft.Json.Linq
-@using Syncfusion.EJ2.Blazor
-@using Syncfusion.EJ2.Blazor.RichTextEditor
-@using Syncfusion.EJ2.Blazor.Inputs
 
+<div class="container" style="height: 100%">
 <div class="main">
 
     <Loading InProgress="IsLoading"></Loading>
@@ -19,21 +17,34 @@
         <LoginDisplay />
 
     </div>
-<div class="container"></div>
-<div class="container"></div>
-<div class="container"></div>
-<div class="container"></div>
-<div class="container"></div>
+
 <AuthorizeView>
 
-    
     <Authorized>
+        <div class="container">
+            <div class="row bg-dark rounded">
+                <div class="mt-2 col-sm-12">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Search</span>
+                        </div>
+                        
+                        <SearchOwner />
+                        <SearchRepo />
 
-        <!-- <Readme /> -->
-
-        <!-- <Create /> -->
+                    </div>
+                    <Path />
+        </div>
+    </div>
         
-        <ListFiles />
+    <ShowStarred />
+    <List />
+    <Editor />
+    <NewFile />
+    <!-- <ListFiles /> -->
+    </div>
+</div>
 
     </Authorized>
 
@@ -46,6 +57,7 @@
     </NotAuthorized>
 </AuthorizeView>
     
+</div>
 </div>
 
 @code {

@@ -1,4 +1,4 @@
-namespace Shared {
+namespace Shared.Models {
 
 	/// <summary>
 	/// Repo List Files
@@ -8,7 +8,7 @@ namespace Shared {
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public RepoFile(){}
+		public RepoFile() { }
 
 		/// <summary>
 		/// Repo Constructor

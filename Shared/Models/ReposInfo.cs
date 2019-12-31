@@ -1,4 +1,4 @@
-namespace Shared {
+namespace Shared.Models {
 
 	/// <summary>
 	/// Owner Repos info 
@@ -8,7 +8,7 @@ namespace Shared {
 		/// <summary>
 		/// Parameterless Constructor needed for deserialization
 		/// </summary>
-		public ReposInfo(){}
+		public ReposInfo() { }
 
 		/// <summary>
 		/// Repo Constructor
@@ -17,7 +17,7 @@ namespace Shared {
 		/// <param name="fullName"></param>
 		/// <param name="description"></param>
 		/// <param name="stargazersCount"></param>
-		public ReposInfo(string name, string fullName, string description, int stargazersCount){
+		public ReposInfo(string name, string fullName, string description, int stargazersCount) {
 			Name = name;
 			FullName = fullName;
 			Description = description;
@@ -28,7 +28,7 @@ namespace Shared {
 		/// Repo Constructor Sort by Stars
 		/// </summary>
 		/// <param name="stargazersCount"></param>
-		public ReposInfo(int stargazersCount){
+		public ReposInfo(int stargazersCount) {
 			StargazersCount = stargazersCount;
 		}
 

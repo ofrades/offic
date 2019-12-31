@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Shared;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
 namespace Server.Controllers {
 
@@ -32,15 +32,14 @@ namespace Server.Controllers {
 		[Route("{owner}/{repoName}/readme")]
 		[HttpGet]
 		public async Task<RepoReadme> GetReadme(
-			[FromRoute] string owner,
-			[FromRoute] string repoName
+			[FromRoute] string owner, [FromRoute] string repoName
 		) {
 			var client = await _authorizeClient.Authorize();
 			var readme = await client.Repository.Content.GetReadme(owner, repoName);
 
 			var gitReadme = new RepoReadme {
 				Content = readme.Content,
-				Name = readme.Name,
+					Name = readme.Name,
 			};
 			return gitReadme;
 		}

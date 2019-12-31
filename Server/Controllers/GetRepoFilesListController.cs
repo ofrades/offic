@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
-using Shared;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
 namespace Server.Controllers {
 
@@ -34,15 +34,13 @@ namespace Server.Controllers {
 		[Route("files/{owner}/{repoName}/{**path}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFile>> GetRepoFilesListPath(
-			[FromRoute] string owner,
-			[FromRoute] string repoName,
-			[FromRoute] string path
+			[FromRoute] string owner, [FromRoute] string repoName, [FromRoute] string path
 		) {
 			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName, path))
-				.Where(s => new[] { ".md", ".txt" }
-				.Any(e => e == Path.GetExtension(s.Name)))
+				.Where(s => new [] { ".md", ".txt" }
+					.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
 				.Select(r => new RepoFile(r.Name));
 
@@ -56,15 +54,13 @@ namespace Server.Controllers {
 		[Route("folders/{owner}/{repoName}/{**path}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFile>> GetRepoFoldersListPath(
-			[FromRoute] string owner,
-			[FromRoute] string repoName,
-			[FromRoute] string path
+			[FromRoute] string owner, [FromRoute] string repoName, [FromRoute] string path
 		) {
 			var client = await _authorizeClient.Authorize();
 
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName, path))
-				.Where(s => new[] { "" }
-				.Any(e => e == Path.GetExtension(s.Name)))
+				.Where(s => new [] { "" }
+					.Any(e => e == Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
 				.Select(r => new RepoFile(r.Name));
 
@@ -78,11 +74,10 @@ namespace Server.Controllers {
 		[Route("files/{owner}/{repoName}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFile>> GetRepoFilesList(
-			[FromRoute] string owner,
-			[FromRoute] string repoName
+			[FromRoute] string owner, [FromRoute] string repoName
 		) {
 			var client = await _authorizeClient.Authorize();
-			var allowedExtensions = new[] { ".md", ".txt" };
+			var allowedExtensions = new [] { ".md", ".txt" };
 			var result = (await client.Repository.Content.GetAllContents(owner, repoName))
 				.Where(s => allowedExtensions.Contains(Path.GetExtension(s.Name)))
 				.OrderBy(o => o.Name)
@@ -98,8 +93,7 @@ namespace Server.Controllers {
 		[Route("folders/{owner}/{repoName}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFile>> GetRepoFoldersList(
-			[FromRoute] string owner,
-			[FromRoute] string repoName
+			[FromRoute] string owner, [FromRoute] string repoName
 		) {
 			var client = await _authorizeClient.Authorize();
 

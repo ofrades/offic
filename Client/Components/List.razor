@@ -1,0 +1,48 @@
+@inject AppState AppState
+@inject ListState ListState
+
+@if(AppState.showList == true){
+	<ul class="list-group col-sm-3">
+
+		<li class="list-group-item">
+			<button type="button" class="btn btn-primary text-left" href="" @onclick="ListState.ShowEditorNewFile" aria-label="New File">
+				<span class="iconify" data-icon="octicon:diff" data-inline="true"></span> New
+			</button>
+			<button type="button" class="btn btn-primary text-right" href="" @onclick="ListState.PreviousFolder" aria-label="Back">
+				<span class="iconify" data-icon="octicon:arrow-left" data-inline="true"></span>
+			</button>
+			<button type="button" class="btn btn-danger text-right" aria-label="Close" @onclick="ListState.ListClose">
+				<span class="iconify" data-icon="octicon:x" data-inline="true"></span>
+			</button>
+		</li>
+		@if(AppState.repoList.Count != 0){
+			<li class="list-group-item bg-primary text-center text-light">Folders</li>
+		}
+		@foreach(var item in AppState.reposFolders){
+			<button type="button" href="" class="list-group-item list-group-item-action bg-light" @onclick="async () => await ListState.GetRepoFilesPath(item.Name)">
+				<span class="iconify" data-icon="octicon:file-directory" data-inline="true"></span>
+				@item.Name
+			</button>
+		}
+		@if(AppState.repoList.Count != 0){
+			<li class="list-group-item bg-primary text-center text-light">Files</li>
+		}
+		@foreach(var item in AppState.repoList){
+			<button type="button" class="list-group-item list-group-item-action bg-light" href="" @onclick="async () => await ListState.GetFile(item.Name)">
+				<span class="iconify" data-icon="octicon:file" data-inline="true"></span>
+				@item.Name
+			</button>
+		}
+		@if(AppState.emptyList == true){
+			<p>Empty List</p>
+		}
+
+	</ul>
+}
+
+@code {
+	protected override void OnInitialized() {
+        AppState.OnChange += StateHasChanged;
+        ListState.OnChange += StateHasChanged;
+    }
+}

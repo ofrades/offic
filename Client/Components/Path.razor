@@ -1,0 +1,13 @@
+@inject ListState ListState
+
+<div class="input-group mt-1">
+	<div class="input-group-prepend">
+		<span class="input-group-text" id="basic-addon3">Path</span>
+	</div>
+	<input type="text" class="form-control" @bind="@ListState.urlListPath" placeholder=":root" disabled/>
+</div>
+@code {
+	protected override void OnInitialized() {
+        ListState.OnChange += StateHasChanged;
+    }
+}

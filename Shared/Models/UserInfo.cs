@@ -1,4 +1,4 @@
-namespace Shared {
+namespace Shared.Models {
 
 	/// <summary>
 	/// User Info Shared between Server-Side and Client-Side

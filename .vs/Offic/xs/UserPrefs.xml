@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{B5263584-9040-44DB-9F8B-5D65E64102C0}|Default">
+  <MonoDevelop.Ide.ItemProperties.Server PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Client/Store/SearchOwnerState.cs">
+    <Files>
+      <File FileName="Client/Components/ShowStarred.razor" Line="11" Column="60" />
+      <File FileName="Client/Store/SearchOwnerState.cs" Line="13" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Offic" expanded="True">
+            <Node name="Client" expanded="True">
+              <Node name="Components" expanded="True" />
+              <Node name="Pages" expanded="True" />
+              <Node name="Store" expanded="True">
+                <Node name="SearchOwnerState.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="Shared" expanded="True">
+              <Node name="Models" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

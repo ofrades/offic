@@ -1,0 +1,48 @@
+@inject AppState AppState
+@inject ListState ListState
+@inject EditorState EditorState
+
+@using Syncfusion.EJ2.Blazor
+@using Syncfusion.EJ2.Blazor.RichTextEditor
+@using Syncfusion.EJ2.Blazor.Inputs
+
+@if(ListState.showEditor == true){
+	<div class="col-sm-9">
+		@foreach(var item in ListState.repoFileContent){
+		<div class="card-body">
+			<button type="button" class="close text-light" aria-label="Close" @onclick="ListState.EditorClose">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="text-light">@item.Name</h4>
+
+		<EditForm Model="@EditorState.UpdateContent">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+			<EjsRichTextEditor @bind-Value="@content">
+				@Markdig.Markdown.ToHtml(item.Content)
+			</EjsRichTextEditor>
+			<InputText type="text" class="form-control" @bind-Value="@commitMessage" placeholder="Commit Message" />
+			@if (content != null && !String.IsNullOrEmpty(commitMessage)) {
+				<button class="btn btn-primary" type="submit" @onclick="() => EditorState.UpdateFile(commitMessage, content)">Submit Update</button>
+			}
+			@if (!String.IsNullOrEmpty(commitMessage)) {
+				<button class="btn btn-danger" type="submit" @onclick="async () => await EditorState.DeleteFile(commitMessage)">Delete File</button>
+			}
+		</EditForm>
+
+		</div>
+		}
+	</div>
+}
+
+@code{
+	string content;
+	string commitMessage;
+
+	protected override void OnInitialized() {
+        AppState.OnChange += StateHasChanged;
+        ListState.OnChange += StateHasChanged;
+    }
+
+}

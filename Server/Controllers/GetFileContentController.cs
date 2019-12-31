@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
-using Shared;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
 namespace Server.Controllers {
 
@@ -34,9 +34,7 @@ namespace Server.Controllers {
 		[Route("file/{owner}/{repoName}/{**path}")]
 		[HttpGet]
 		public async Task<IEnumerable<RepoFile>> GetFileContent(
-			[FromRoute] string owner,
-			[FromRoute] string repoName,
-			[FromRoute] string path
+			[FromRoute] string owner, [FromRoute] string repoName, [FromRoute] string path
 		) {
 			var client = await _authorizeClient.Authorize();
 

@@ -1,0 +1,7 @@
+@inject AppState AppState
+
+<input type="text" class="form-control" @bind-value="@owner" @bind-value:event="oninput" @onkeyup="() => AppState.GetRepos(owner)" placeholder="Add Owner"/>
+
+@code{
+	string owner;
+}
