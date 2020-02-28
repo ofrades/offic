@@ -43,10 +43,10 @@ namespace Server {
 				})
 				.AddCookie()
 				.AddGitHub(githubOptions => {
-					// githubOptions.ClientId = Configuration["Authentication:GitHub:ClientId"];
-					githubOptions.ClientId = System.Environment.GetEnvironmentVariable("ClientId");
-					githubOptions.ClientSecret = System.Environment.GetEnvironmentVariable("ClientSecret");
-					// githubOptions.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
+					//githubOptions.ClientId = System.Environment.GetEnvironmentVariable("ClientId");
+					//githubOptions.ClientSecret = System.Environment.GetEnvironmentVariable("ClientSecret");
+					githubOptions.ClientId = Configuration["Authentication:GitHub:ClientId"];
+					githubOptions.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"];
 					githubOptions.SaveTokens = true;
 					githubOptions.TokenEndpoint = "https://github.com/login/oauth/access_token";
 					githubOptions.Scope.Add("public_repo");
